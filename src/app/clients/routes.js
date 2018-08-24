@@ -8,6 +8,11 @@ export default [
   {
     path: '/clients/create',
     component: components.CreateEditClient,
-    name: 'createEditClient'
+    name: 'createClient'
+  },
+  {
+    path: '/clients/:clientId/edit',
+    component: components.CreateEditClient,
+    name: 'editClient'
   }
 ];

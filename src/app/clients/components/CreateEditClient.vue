@@ -4,42 +4,42 @@
 
     <router-link :to="{ name: 'clientsListView' }">View all clients</router-link>
 
-    <form class="form" @submit.prevent="saveNewClient">
+    <form class="form" @submit.prevent="processSave">
       <label for="surname" class="label">Surname</label>
       <p class="control">
-        <input type="text" class="input" name="surname" v-model="newClient.surname">
+        <input type="text" class="input" name="surname" v-model="selectedClient.surname">
       </p>
       <label for="name" class="label">Name</label>
       <p class="control">
-        <input type="text" class="input" name="name" v-model="newClient.name">
+        <input type="text" class="input" name="name" v-model="selectedClient.name">
       </p>
       <label for="patronymic" class="label">Patronymic</label>
       <p class="control">
-        <input type="text" class="input" name="patronymic" v-model="newClient.patronymic">
+        <input type="text" class="input" name="patronymic" v-model="selectedClient.patronymic">
       </p>
       <label for="email" class="label">E-mail</label>
       <p class="control">
-        <input type="text" class="input" name="email" v-model="newClient.email">
+        <input type="text" class="input" name="email" v-model="selectedClient.email">
       </p>
       <label for="phone" class="label">Phone number</label>
       <p class="control">
-        <input type="text" class="input" name="phone" v-model="newClient.phone">
+        <input type="text" class="input" name="phone" v-model="selectedClient.phone">
       </p>
       <label for="address" class="label">Address</label>
       <p class="control">
-        <input type="text" class="input" name="address" v-model="newClient.address">
+        <input type="text" class="input" name="address" v-model="selectedClient.address">
       </p>
       <label for="series" class="label">Passport series</label>
       <p class="control">
-        <input type="number" class="input" name="series" v-model="newClient.series">
+        <input type="number" class="input" name="series" v-model="selectedClient.series">
       </p>
       <label for="number" class="label">Passport number</label>
       <p class="control">
-        <input type="number" class="input" name="number" v-model="newClient.number">
+        <input type="number" class="input" name="number" v-model="selectedClient.number">
       </p>
       <label for="birthDate" class="label">Date of birth</label>
       <p class="control">
-        <flat-pickr v-model="newClient.birthDate" :config="config" name="birthDate" placeholder="Select a date"></flat-pickr>
+        <flat-pickr v-model="selectedClient.birthDate" :config="config" name="birthDate" placeholder="Select a date"></flat-pickr>
       </p>
       <div class="control is-grouped">
         <p class="control">
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -71,20 +71,63 @@ export default {
         dateFormat: "d-M-Y",
         maxDate: "today"
       },
-      newClient: {}
+      selectedClient: {},
+      editing: false
     };
+  },
+
+  mounted () {
+    if ('clientId' in this.$route.params) {
+      let selectedClient = this.getClientById(this.$route.params.clientId);
+      if (selectedClient) {
+        this.editing = true;
+        this.selectedClient = {
+          surname: selectedClient.surname,
+          name: selectedClient.name,
+          patronymic: selectedClient.patronymic,
+          email: selectedClient.email,
+          phone: selectedClient.phone,
+          address: selectedClient.address,
+          series: selectedClient.series,
+          number: selectedClient.number,
+          birthDate: selectedClient.birthDate,
+          id: selectedClient.id
+        };
+      }
+    }
   },
 
   methods: {
     ...mapActions([
-      'addClient'
+      'addClient',
+      'updateClient'
     ]),
 
+    resetAndGo () {
+      this.selectedClient = {};
+      this.$router.push({ name: 'clientsListView' });
+    },
+
     saveNewClient () {
-      this.addClient(this.newClient).then(() => {
-        this.$router.push({ name: 'clientsListView' });
+      this.addClient(this.selectedClient).then(() => {
+        this.resetAndGo();
       });
+    },
+
+    saveClient () {
+      this.updateClient(this.selectedClient).then(() => {
+        this.resetAndGo();
+      });
+    },
+    processSave () {
+      this.editing ? this.saveClient() : this.saveNewClient();
     }
+  },
+
+  computed: {
+    ...mapGetters([
+      'getClientById'
+    ])
   }
 };
 </script>
