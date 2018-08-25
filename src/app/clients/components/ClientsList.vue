@@ -2,10 +2,12 @@
   <div id="clients-list-view">
     I'm a list of clients!
 
-    <router-link :to="{ name: 'createClient' }">Add an client</router-link>
+    <router-link :to="{ name: 'createClient' }">Add a client</router-link>
+
+    <router-link :to="{ name: 'contractsListView' }">Go to a contracts</router-link>
 
     <ul>
-      <li v-for="client, key in clients">
+      <li v-for="client, key in sortedClients">
         {{ client.surname }}
         {{ client.name }}
         {{ client.patronymic }}
@@ -47,7 +49,17 @@ export default {
   computed: {
     ...mapState({
       'clients': state => state.clients.clients
-    })
+    }),
+
+    sortedClients () {
+      let sortedKeys = Object.keys(this.clients).sort((a, b) => {
+        return this.clients[a].surname.localeCompare(this.clients[b].surname);
+      });
+
+      return sortedKeys.map((key) => {
+        return this.clients[key];
+      });
+    }
   }
 };
 </script>

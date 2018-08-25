@@ -68,8 +68,8 @@ export default {
   data: () => {
     return {
       config: {
-        dateFormat: "d-M-Y",
-        maxDate: "today"
+        dateFormat: 'd-M-Y',
+        maxDate: 'today'
       },
       selectedClient: {},
       editing: false
@@ -103,14 +103,19 @@ export default {
     saveNewClient () {
       this.createClient(this.selectedClient).then(() => {
         this.resetAndGo();
+      }).catch((err) => {
+        alert(err);
       });
     },
 
     saveClient () {
       this.updateClient(this.selectedClient).then(() => {
         this.resetAndGo();
+      }).catch((err) => {
+        alert(err);
       });
     },
+
     processSave () {
       this.editing ? this.saveClient() : this.saveNewClient();
     }

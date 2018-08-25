@@ -2,6 +2,17 @@ import * as components from './components';
 export default [
   {
     path: '/contracts',
-    component: components.ContractsListView
+    component: components.ContractsListView,
+    name: 'contractsListView'
+  },
+  {
+    path: '/contracts/create',
+    component: components.CreateUpdateContract,
+    name: 'createContract'
+  },
+  {
+    path: '/contracts/:contractId/update',
+    component: components.CreateUpdateContract,
+    name: 'updateContract'
   }
 ];
