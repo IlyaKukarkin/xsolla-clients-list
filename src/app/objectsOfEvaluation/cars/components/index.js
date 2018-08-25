@@ -1,1 +1,1 @@
-export { default as CarsListView } from './CarsListView';
+export { default as CarsListView } from './CarsList';

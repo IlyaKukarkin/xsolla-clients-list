@@ -82,18 +82,7 @@ export default {
         let selectedClient = this.getClientById(this.$route.params.clientId);
         if (selectedClient) {
           this.editing = true;
-          this.selectedClient = {
-            surname: selectedClient.surname,
-            name: selectedClient.name,
-            patronymic: selectedClient.patronymic,
-            email: selectedClient.email,
-            phone: selectedClient.phone,
-            address: selectedClient.address,
-            series: selectedClient.series,
-            number: selectedClient.number,
-            birthDate: selectedClient.birthDate,
-            id: selectedClient.id
-          };
+          this.selectedClient = Object.assign({}, selectedClient);
         }
       });
     }
@@ -101,7 +90,7 @@ export default {
 
   methods: {
     ...mapActions([
-      'addClient',
+      'createClient',
       'updateClient',
       'loadClients'
     ]),
@@ -112,7 +101,7 @@ export default {
     },
 
     saveNewClient () {
-      this.addClient(this.selectedClient).then(() => {
+      this.createClient(this.selectedClient).then(() => {
         this.resetAndGo();
       });
     },

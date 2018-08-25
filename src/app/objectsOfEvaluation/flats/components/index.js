@@ -1,1 +1,1 @@
-export { default as FlatsListView } from './FlatsListView';
+export { default as FlatsListView } from './FlatsList';

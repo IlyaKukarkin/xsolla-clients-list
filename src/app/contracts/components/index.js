@@ -1,1 +1,1 @@
-export { default as ContractsListView } from './ContractsListView';
+export { default as ContractsListView } from './ContractsList';

@@ -7,12 +7,12 @@ export default [
   },
   {
     path: '/clients/create',
-    component: components.CreateEditClient,
+    component: components.CreateUpdateClient,
     name: 'createClient'
   },
   {
-    path: '/clients/:clientId/edit',
-    component: components.CreateEditClient,
-    name: 'editClient'
+    path: '/clients/:clientId/update',
+    component: components.CreateUpdateClient,
+    name: 'updateClient'
   }
 ];

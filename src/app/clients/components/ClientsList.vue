@@ -16,7 +16,7 @@
         {{ client.number }}
         {{ client.birthDate }}
         <a @click="confirmDeleteClient(client)">Delete</a>
-        <router-link :to="{ name: 'editClient', params: { clientId: client.id } }">Edit</router-link>
+        <router-link :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
       </li>
     </ul>
   </div>

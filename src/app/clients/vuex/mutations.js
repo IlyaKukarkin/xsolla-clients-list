@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 export default {
-  ADD_CLIENT (state, payload) {
+  CREATE_CLIENT (state, payload) {
     state.clients[payload.client.id] = payload.client;
   },
 

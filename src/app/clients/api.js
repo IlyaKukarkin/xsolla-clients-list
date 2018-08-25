@@ -1,10 +1,11 @@
 import localforage from 'localforage';
+import { processAPIData } from '../../utils';
 
 const CLIENT_NAMESPACE = 'CLIENT-';
 
 export const fetchClients = () => {
   return localforage.startsWith(CLIENT_NAMESPACE).then((res) => {
-    return res;
+    return processAPIData(res);
   });
 };
 
@@ -18,7 +19,7 @@ export const saveClient = (client) => {
     console.log('oops! the client was too far gone, there was nothing we could do to save him ', err);
   });
 };
-export const removeClient = (client) => {
+export const deleteClient = (client) => {
   return localforage.removeItem(
     CLIENT_NAMESPACE + client.id
   ).then(() => {

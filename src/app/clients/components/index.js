@@ -1,2 +1,2 @@
-export { default as ClientsListView } from './ClientsListView';
-export { default as CreateEditClient } from './CreateEditClient';
+export { default as ClientsListView } from './ClientsList';
+export { default as CreateUpdateClient } from './CreateUpdateClient';
