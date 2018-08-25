@@ -78,29 +78,32 @@ export default {
 
   mounted () {
     if ('clientId' in this.$route.params) {
-      let selectedClient = this.getClientById(this.$route.params.clientId);
-      if (selectedClient) {
-        this.editing = true;
-        this.selectedClient = {
-          surname: selectedClient.surname,
-          name: selectedClient.name,
-          patronymic: selectedClient.patronymic,
-          email: selectedClient.email,
-          phone: selectedClient.phone,
-          address: selectedClient.address,
-          series: selectedClient.series,
-          number: selectedClient.number,
-          birthDate: selectedClient.birthDate,
-          id: selectedClient.id
-        };
-      }
+      this.loadClients().then(() => {
+        let selectedClient = this.getClientById(this.$route.params.clientId);
+        if (selectedClient) {
+          this.editing = true;
+          this.selectedClient = {
+            surname: selectedClient.surname,
+            name: selectedClient.name,
+            patronymic: selectedClient.patronymic,
+            email: selectedClient.email,
+            phone: selectedClient.phone,
+            address: selectedClient.address,
+            series: selectedClient.series,
+            number: selectedClient.number,
+            birthDate: selectedClient.birthDate,
+            id: selectedClient.id
+          };
+        }
+      });
     }
   },
 
   methods: {
     ...mapActions([
       'addClient',
-      'updateClient'
+      'updateClient',
+      'loadClients'
     ]),
 
     resetAndGo () {

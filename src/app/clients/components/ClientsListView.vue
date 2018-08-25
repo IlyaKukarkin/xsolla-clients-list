@@ -28,9 +28,14 @@ import { mapState, mapActions } from 'vuex';
 export default {
   name: 'clients-list-view',
 
+  mounted () {
+    this.loadClients();
+  },
+
   methods: {
     ...mapActions([
-      'deleteClient'
+      'deleteClient',
+      'loadClients'
     ]),
     confirmDeleteClient (client) {
       if (confirm(`Are you sure you want to delete ${client.surname}?`)) {
