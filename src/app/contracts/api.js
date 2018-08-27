@@ -2,6 +2,7 @@ import localforage from 'localforage';
 import { processAPIData } from '../../utils';
 
 const CONTRACT_NAMESPACE = 'CONTRACT-';
+const CLIENT_NAMESPACE = 'CLIENT-';
 
 export const fetchContracts = () => {
   return localforage.startsWith(CONTRACT_NAMESPACE).then((res) => {
@@ -28,5 +29,11 @@ export const deleteContract = (contract) => {
   }).catch((err) => {
     console.log(err);
     return false;
+  });
+};
+
+export const fetchClients = () => {
+  return localforage.startsWith(CLIENT_NAMESPACE).then((res) => {
+    return processAPIData(res);
   });
 };

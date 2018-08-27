@@ -31,7 +31,13 @@ export const createClient = ({ commit, state }, data) => {
   });
 };
 
-export const updateClient = ({ commit }, data) => {
+export const updateClient = ({ commit, state }, data) => {
+  let unique = verifyUniqueClient(state.clients, data);
+
+  if (!unique) {
+    return Promise.reject(new Error('This client already exists!'));
+  }
+
   commit('UPDATE_CLIENT', { client: data });
   saveClient(data);
 };

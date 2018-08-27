@@ -4,12 +4,15 @@
 
     <router-link :to="{ name: 'createContract' }">Add a contract</router-link>
 
+    <router-link :to="{ name: 'clientsListView' }">Go to a clients</router-link>
+
     <ul>
       <li v-for="contract, key in sortedContracts">
         {{ contract.summ }}
         {{ contract.prePaid }}
         {{ contract.startDate }}
         {{ contract.finishDate }}
+        {{ getClientFIO(contract.clientId) }}
         <a @click="confirmDeleteContract(contract)">Delete</a>
         <router-link :to="{ name: 'updateContract', params: { contractId: contract.id } }">Edit</router-link>
       </li>
@@ -18,10 +21,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'contracts-list-view',
+
+  created () {
+    this.loadClients();
+  },
 
   mounted () {
     this.loadContracts();
@@ -30,18 +37,30 @@ export default {
   methods: {
     ...mapActions([
       'deleteContract',
-      'loadContracts'
+      'loadContracts',
+      'loadClients'
     ]),
+
     confirmDeleteContract (contract) {
       if (confirm(`Are you sure you want to delete ${contract.surname}?`)) {
         this.deleteContract(contract);
       }
+    },
+
+    getClientFIO (clientId) {
+      let client = this.getClientFromId(clientId);
+      return client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + ' ' + client.patronymic.substring(0, 1).toUpperCase();
     }
   },
 
   computed: {
+    ...mapGetters([
+      'getClientFromId'
+    ]),
+
     ...mapState({
-      'contracts': state => state.contracts.contracts
+      'contracts': state => state.contracts.contracts,
+      'clients': state => state.clients.clients
     }),
 
     sortedContracts () {

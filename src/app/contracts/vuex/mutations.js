@@ -15,5 +15,9 @@ export default {
 
   LOAD_CONTRACTS (state, payload) {
     state.contracts = payload;
+  },
+
+  LOAD_CLIENTS (state, payload) {
+    state.clients = payload;
   }
 };

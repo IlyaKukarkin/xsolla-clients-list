@@ -21,6 +21,13 @@
       <p class="control">
         <flat-pickr v-model="selectedContract.finishDate" :config="configFinishDate" name="finishDate" placeholder="Select a date"></flat-pickr>
       </p>
+
+      <select v-model="selectedContract.clientId">
+        <option v-for="client in clients" v-bind:value="client.id" v-bind:key="client.id">
+          {{ client.surname }}
+        </option>
+      </select>
+
       <div class="control is-grouped">
         <p class="control">
           <button class="button is-primary">Submit</button>
@@ -34,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -70,13 +77,15 @@ export default {
         }
       });
     }
+    this.loadClients();
   },
 
   methods: {
     ...mapActions([
       'createContract',
       'updateContract',
-      'loadContracts'
+      'loadContracts',
+      'loadClients'
     ]),
 
     resetAndGo () {
@@ -107,7 +116,11 @@ export default {
   computed: {
     ...mapGetters([
       'getContractById'
-    ])
+    ]),
+
+    ...mapState({
+      'clients': state => state.clients.clients
+    })
   }
 };
 </script>
