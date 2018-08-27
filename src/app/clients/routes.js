@@ -1,7 +1,7 @@
 import * as components from './components';
 export default [
   {
-    path: '/',
+    path: '/clients',
     component: components.ClientsListView,
     name: 'clientsListView'
   },

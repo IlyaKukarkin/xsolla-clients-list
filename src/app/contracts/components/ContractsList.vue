@@ -1,10 +1,12 @@
 <template>
   <div id="contracts-list-view">
-    I'm a list of contracts!
+    <h1 class="title is-1">List of contracts</h1>
 
     <router-link :to="{ name: 'createContract' }">Add a contract</router-link>
 
-    <router-link :to="{ name: 'clientsListView' }">Go to a clients</router-link>
+    <router-link :to="{ name: 'clientsListView' }">Clients</router-link>
+
+    <router-link :to="{ name: 'carsListView' }">Cars</router-link>
 
     <ul>
       <li v-for="contract, key in sortedContracts">
@@ -42,7 +44,7 @@ export default {
     ]),
 
     confirmDeleteContract (contract) {
-      if (confirm(`Are you sure you want to delete ${contract.surname}?`)) {
+      if (confirm(`Are you sure you want to delete this contract?`)) {
         this.deleteContract(contract);
       }
     },

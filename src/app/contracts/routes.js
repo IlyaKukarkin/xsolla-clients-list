@@ -1,7 +1,7 @@
 import * as components from './components';
 export default [
   {
-    path: '/contracts',
+    path: '/',
     component: components.ContractsListView,
     name: 'contractsListView'
   },
