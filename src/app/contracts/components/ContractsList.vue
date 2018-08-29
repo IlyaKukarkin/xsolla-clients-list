@@ -1,24 +1,56 @@
 <template>
   <div id="contracts-list-view">
-    <h1 class="title is-1">List of contracts</h1>
 
-    <router-link :to="{ name: 'createContract' }">Add a contract</router-link>
+    <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
 
-    <router-link :to="{ name: 'clientsListView' }">Clients</router-link>
+    <div class="container">
+      <div class="tabs is-centered is-large">
+        <ul>
+          <li class="is-active"><a>Contracts</a></li>
+          <li><router-link :to="{ name: 'clientsListView' }">Clients</router-link></li>
+          <li><router-link :to="{ name: 'carsListView' }">Cars</router-link></li>
+          <li><router-link :to="{ name: 'flatsListView' }">Flats</router-link></li>
+        </ul>
+      </div>
 
-    <router-link :to="{ name: 'carsListView' }">Cars</router-link>
-
-    <ul>
-      <li v-for="contract, key in sortedContracts">
-        {{ contract.summ }}
-        {{ contract.prePaid }}
-        {{ contract.startDate }}
-        {{ contract.finishDate }}
-        {{ getClientFIO(contract.clientId) }}
-        <a @click="confirmDeleteContract(contract)">Delete</a>
-        <router-link :to="{ name: 'updateContract', params: { contractId: contract.id } }">Edit</router-link>
-      </li>
-    </ul>
+      <div class="hero">
+        <table class="table is-bordered">
+          <thead>
+          <tr>
+            <th>Summ</th>
+            <th>Prepaid</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Client</th>
+            <th> <router-link class="button is-link" :to="{ name: 'createContract' }">Add contract</router-link> </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="contract, key in sortedContracts" >
+            <td>
+              <span class="subtitle is-5">{{ contract.summ }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ contract.prePaid }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ contract.startDate }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ contract.finishDate }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ getClientFIO(contract.clientId) }}</span>
+            </td>
+            <td>
+              <router-link class="button is-primary" :to="{ name: 'updateContract', params: { contractId: contract.id } }">Edit</router-link>
+              <a class="button is-danger" @click="confirmDeleteContract(contract)">Delete</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
   </div>
 </template>
 
@@ -30,9 +62,6 @@ export default {
 
   created () {
     this.loadClients();
-  },
-
-  mounted () {
     this.loadContracts();
   },
 
@@ -51,7 +80,7 @@ export default {
 
     getClientFIO (clientId) {
       let client = this.getClientFromId(clientId);
-      return client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + ' ' + client.patronymic.substring(0, 1).toUpperCase();
+      return client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
     }
   },
 
@@ -80,7 +109,17 @@ export default {
 };
 </script>
 
-<style scoped lang='scss'>
-  #contracts-list-view {
+<style lang="scss">
+  .table td, .table th {
+    border-color: #bbbbbb;
+    text-align: center;
+    vertical-align: middle;
+  }
+  thead tr {
+    background-color: rgba(187, 93, 79, 0.27);
+    font-size: 14pt;
+  }
+  tbody tr {
+    background-color: rgba(34, 109, 59, 0.2);
   }
 </style>

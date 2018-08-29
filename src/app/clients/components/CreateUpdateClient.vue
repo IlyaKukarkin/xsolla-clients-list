@@ -1,54 +1,133 @@
 <template>
   <div id="clients-create-edit-view">
-    You can create and edit clients with me, yippee!
 
-    <router-link :to="{ name: 'clientsListView' }">View all clients</router-link>
+    <h3 class="title is-3" style="margin-bottom: 20pt">Add client</h3>
 
-    <form class="form" @submit.prevent="processSave">
-      <label for="surname" class="label">Surname</label>
-      <p class="control">
-        <input type="text" class="input" name="surname" v-model="selectedClient.surname">
-      </p>
-      <label for="name" class="label">Name</label>
-      <p class="control">
-        <input type="text" class="input" name="name" v-model="selectedClient.name">
-      </p>
-      <label for="patronymic" class="label">Patronymic</label>
-      <p class="control">
-        <input type="text" class="input" name="patronymic" v-model="selectedClient.patronymic">
-      </p>
-      <label for="email" class="label">E-mail</label>
-      <p class="control">
-        <input type="text" class="input" name="email" v-model="selectedClient.email">
-      </p>
-      <label for="phone" class="label">Phone number</label>
-      <p class="control">
-        <input type="text" class="input" name="phone" v-model="selectedClient.phone">
-      </p>
-      <label for="address" class="label">Address</label>
-      <p class="control">
-        <input type="text" class="input" name="address" v-model="selectedClient.address">
-      </p>
-      <label for="series" class="label">Passport series</label>
-      <p class="control">
-        <input type="number" class="input" name="series" v-model="selectedClient.series">
-      </p>
-      <label for="number" class="label">Passport number</label>
-      <p class="control">
-        <input type="number" class="input" name="number" v-model="selectedClient.number">
-      </p>
-      <label for="birthDate" class="label">Date of birth</label>
-      <p class="control">
-        <flat-pickr v-model="selectedClient.birthDate" :config="config" name="birthDate" placeholder="Select a date"></flat-pickr>
-      </p>
-      <div class="control is-grouped">
-        <p class="control">
-          <button class="button is-primary">Submit</button>
-        </p>
-        <p class="control">
-          <router-link :to="{ name: 'clientsListView' }"><button class="button is-link">Cancel</button></router-link>
-        </p>
+    <form class="columns" @submit.prevent="processSave">
+      <div class="column"></div>
+      <div class="column is-half">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="surname" class="label">Surname</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="surname" v-model="selectedClient.surname">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="name" class="label">Name</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="name" v-model="selectedClient.name">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="patronymic" class="label">Patronymic</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="patronymic" v-model="selectedClient.patronymic">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="email" class="label">E-mail</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="email" v-model="selectedClient.email">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="phone" class="label">Phone number</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="phone" v-model="selectedClient.phone">
+              </div>
+            </div>
+          </div>
+        </div><div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="address" class="label">Address</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" class="input" name="address" v-model="selectedClient.address">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="series" class="label">Passport series</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="number" class="input" name="series" v-model="selectedClient.series">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="number" class="label">Passport number</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="number" class="input" name="number" v-model="selectedClient.number">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="birthDate" class="label">Birth date</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <flat-pickr class="input" v-model="selectedClient.birthDate" :config="config" name="birthDate" placeholder="Select a date"></flat-pickr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <!-- Left empty for spacing -->
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary">Submit</button>
+                <router-link :to="{ name: 'clientsListView' }"><button class="button is-link">Cancel</button></router-link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="column"></div>
     </form>
   </div>
 </template>

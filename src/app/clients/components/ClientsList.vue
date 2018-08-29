@@ -1,26 +1,72 @@
 <template>
   <div id="clients-list-view">
-    <h1 class="title is-1">List of clients</h1>
+    <div class="container">
 
-    <router-link :to="{ name: 'createClient' }">Add a client</router-link>
+      <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
 
-    <router-link :to="{ name: 'contractsListView' }">Back to contracts</router-link>
+      <div class="tabs is-centered is-large">
+        <ul>
+          <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>
+          <li class="is-active"><a>Clients</a></li>
+          <li><router-link :to="{ name: 'carsListView' }">Cars</router-link></li>
+          <li><router-link :to="{ name: 'flatsListView' }">Flats</router-link></li>
+        </ul>
+      </div>
 
-    <ul>
-      <li v-for="client, key in sortedClients">
-        {{ client.surname }}
-        {{ client.name }}
-        {{ client.patronymic }}
-        {{ client.email }}
-        {{ client.phone }}
-        {{ client.address }}
-        {{ client.series }}
-        {{ client.number }}
-        {{ client.birthDate }}
-        <a @click="confirmDeleteClient(client)">Delete</a>
-        <router-link :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
-      </li>
-    </ul>
+      <div class="hero">
+      <table class="table is-bordered">
+        <thead>
+          <tr>
+            <th>Surname</th>
+            <th>Name</th>
+            <th>Patronymic</th>
+            <th>E-mail</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Passport series</th>
+            <th>Passport number</th>
+            <th>Birth Date</th>
+            <th> <router-link class="button is-link" :to="{ name: 'createClient' }">Add client</router-link> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="client, key in sortedClients" >
+            <td>
+              <span class="subtitle is-5">{{ client.surname }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.name }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.patronymic }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.email }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.phone }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.address }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.series }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.number }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ client.birthDate }}</span>
+            </td>
+            <td>
+              <router-link class="button is-primary" :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
+              <a class="button is-danger" @click="confirmDeleteClient(client)">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,6 +111,16 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-  #clients-list-view {
+  .table td, .table th {
+    border-color: #bbbbbb;
+    text-align: center;
+    vertical-align: middle;
+  }
+  thead tr {
+    background-color: rgba(187, 93, 79, 0.27);
+    font-size: 14pt;
+  }
+  tbody tr {
+    background-color: rgba(34, 109, 59, 0.2);
   }
 </style>

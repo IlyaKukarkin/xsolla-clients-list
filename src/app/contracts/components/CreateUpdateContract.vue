@@ -1,41 +1,90 @@
 <template>
   <div id="contracts-create-edit-view">
-    You can create and edit contracts with me, yippee!
 
-    <router-link :to="{ name: 'contractsListView' }">View all contracts</router-link>
+    <h3 class="title is-3" style="margin-bottom: 20pt">Add contract</h3>
 
-    <form class="form" @submit.prevent="processSave">
-      <label for="summ" class="label">Contract summ</label>
-      <p class="control">
-        <input type="text" class="input" name="summ" v-model="selectedContract.summ">
-      </p>
-      <label for="prePaid" class="label">Prepaid</label>
-      <p class="control">
-        <input type="text" class="input" name="prePaid" v-model="selectedContract.prePaid">
-      </p>
-      <label for="startDate" class="label">Start Date</label>
-      <p class="control">
-        <flat-pickr v-model="selectedContract.startDate" :config="configStartDate" name="startDate" placeholder="Select a date"></flat-pickr>
-      </p>
-      <label for="finishDate" class="label">Finish Date</label>
-      <p class="control">
-        <flat-pickr v-model="selectedContract.finishDate" :config="configFinishDate" name="finishDate" placeholder="Select a date"></flat-pickr>
-      </p>
-
-      <select v-model="selectedContract.clientId">
-        <option v-for="client in clients" v-bind:value="client.id" v-bind:key="client.id">
-          {{ client.surname }}
-        </option>
-      </select>
-
-      <div class="control is-grouped">
-        <p class="control">
-          <button class="button is-primary">Submit</button>
-        </p>
-        <p class="control">
-          <router-link :to="{ name: 'contractsListView' }"><button class="button is-link">Cancel</button></router-link>
-        </p>
+    <form class="columns" @submit.prevent="processSave">
+      <div class="column"></div>
+      <div class="column is-half">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="summ" class="label">Contract summ</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="number" class="input" name="summ" v-model="selectedContract.summ">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="prePaid" class="label">Prepaid</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="number" class="input" name="prePaid" v-model="selectedContract.prePaid">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="startDate" class="label">Start date</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <flat-pickr class="input" v-model="selectedContract.startDate" :config="configStartDate" name="startDate" placeholder="Select a date"></flat-pickr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="finishDate" class="label">Finish date</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <flat-pickr class="input" v-model="selectedContract.finishDate" :config="configFinishDate" name="finishDate" placeholder="Select a date"></flat-pickr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="selectedContract.clientId" class="label">Client</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <select class="select input" v-model="selectedContract.clientId">
+                  <option v-for="client in clients" v-bind:value="client.id" v-bind:key="client.id">
+                    {{ client.surname }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <!-- Left empty for spacing -->
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary">Submit</button>
+                <router-link :to="{ name: 'contractsListView' }"><button class="button is-link">Cancel</button></router-link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="column"></div>
     </form>
   </div>
 </template>

@@ -2,16 +2,11 @@ import { deleteCar as deleteCarFromAPI, saveCar, fetchCars } from '../api';
 import { guid } from '../../../utils';
 
 const verifyUniqueCar = (cars, car) => {
-  if (Object.values(cars).find((clnt) =>
-    clnt.surname === car.surname &&
-    clnt.name === car.name &&
-    clnt.patronymic === car.patronymic &&
-    clnt.email === car.email &&
-    clnt.phone === car.phone &&
-    clnt.address === car.address &&
-    clnt.series === car.series &&
-    clnt.number === car.number &&
-    clnt.birthDate === car.birthDate)) { return false; }
+  if (Object.values(cars).find((cr) =>
+    cr.mark === car.mark &&
+    cr.model === car.model &&
+    cr.year === car.year &&
+    cr.number === car.number)) { return false; }
 
   return true;
 };

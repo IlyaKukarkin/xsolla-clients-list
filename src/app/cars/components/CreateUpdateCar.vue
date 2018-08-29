@@ -1,34 +1,74 @@
 <template>
   <div id="cars-create-edit-view">
-    You can create and edit cars with me, yippee!
 
-    <router-link :to="{ name: 'carsListView' }">View all cars</router-link>
+    <h3 class="title is-3" style="margin-bottom: 20pt">Add car</h3>
 
-    <form class="form" @submit.prevent="processSave">
-      <label for="mark" class="label">Mark</label>
-      <p class="control">
-        <input type="text" class="input" name="mark" v-model="selectedCar.mark">
-      </p>
-      <label for="model" class="label">Model</label>
-      <p class="control">
-        <input type="text" class="input" name="model" v-model="selectedCar.model">
-      </p>
-      <label for="year" class="label">Year of issue</label>
-      <p class="control">
-        <input type="number" class="input" name="year" v-model="selectedCar.year">
-      </p>
-      <label for="number" class="label">Number</label>
-      <p class="control">
-        <input type="text" class="input" name="number" v-model="selectedCar.number">
-      </p>
-      <div class="control is-grouped">
-        <p class="control">
-          <button class="button is-primary">Submit</button>
-        </p>
-        <p class="control">
-          <router-link :to="{ name: 'carsListView' }"><button class="button is-link">Cancel</button></router-link>
-        </p>
+    <form class="columns" @submit.prevent="processSave">
+    <div class="column"></div>
+    <div class="column is-half">
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label for="mark" class="label">Mark</label>
       </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input type="text" class="input" name="mark" v-model="selectedCar.mark">
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="model" class="label">Model</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" class="input" name="model" v-model="selectedCar.model">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="year" class="label">Year of issue</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" class="input" name="year" v-model="selectedCar.year">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="number" class="label">Plate number</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" class="input" name="number" v-model="selectedCar.number">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary">Submit</button>
+              <router-link :to="{ name: 'carsListView' }"><button class="button is-link">Cancel</button></router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column"></div>
     </form>
   </div>
 </template>
