@@ -22,6 +22,7 @@
             <th>Start date</th>
             <th>End date</th>
             <th>Client</th>
+            <th>Object Type</th>
             <th> <router-link class="button is-link" :to="{ name: 'createContract' }">Add contract</router-link> </th>
           </tr>
           </thead>
@@ -41,6 +42,9 @@
             </td>
             <td>
               <span class="subtitle is-5">{{ getClientFIO(contract.clientId) }}</span>
+            </td>
+            <td>
+              <span class="subtitle is-5">{{ getObjectType(contract.objectId) }}</span>
             </td>
             <td>
               <router-link class="button is-primary" :to="{ name: 'updateContract', params: { contractId: contract.id } }">Edit</router-link>
@@ -63,13 +67,17 @@ export default {
   created () {
     this.loadClients();
     this.loadContracts();
+    this.loadFlats();
+    this.loadCars();
   },
 
   methods: {
     ...mapActions([
       'deleteContract',
       'loadContracts',
-      'loadClients'
+      'loadClients',
+      'loadFlats',
+      'loadCars'
     ]),
 
     confirmDeleteContract (contract) {
@@ -81,17 +89,31 @@ export default {
     getClientFIO (clientId) {
       let client = this.getClientFromId(clientId);
       return client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
+    },
+
+    getObjectType(objectId) {
+      let selectedObject = this.getFlatFromId(objectId);
+      if (selectedObject) {
+        return 'Flat';
+      } else {
+        selectedObject = this.getCarFromId(objectId);
+        return 'Car';
+      }
     }
   },
 
   computed: {
     ...mapGetters([
-      'getClientFromId'
+      'getClientFromId',
+      'getCarFromId',
+      'getFlatFromId'
     ]),
 
     ...mapState({
       'contracts': state => state.contracts.contracts,
-      'clients': state => state.clients.clients
+      'clients': state => state.clients.clients,
+      'cars': state => state.cars.cars,
+      'flats': state => state.flats.flats
     }),
 
     sortedContracts () {

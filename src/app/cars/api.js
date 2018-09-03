@@ -19,6 +19,7 @@ export const saveCar = (car) => {
     console.log('oops! the car was too far gone, there was nothing we could do to save him ', err);
   });
 };
+
 export const deleteCar = (car) => {
   return localforage.removeItem(
     CAR_NAMESPACE + car.id

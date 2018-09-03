@@ -71,6 +71,42 @@
           </div>
         </div>
         <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Choose object</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <select class="select input" v-model="chosenObject">
+                  <option>Flat</option>
+                  <option>Car</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label for="selectedContract.objectId" class="label">Object of evaluation</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <select v-if="chosenObject === 'Flat'" class="select input" v-model="selectedContract.objectId">
+                  <option v-for="flat in flats" v-bind:value="flat.id" v-bind:key="flat.id">
+                    {{ flat.address }}
+                  </option>
+                </select>
+                <select v-if="chosenObject === 'Car'" class="select input" v-model="selectedContract.objectId">
+                  <option v-for="car in cars" v-bind:value="car.id" v-bind:key="car.id">
+                    {{ car.mark }} {{ car.model }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
           <div class="field-label">
             <!-- Left empty for spacing -->
           </div>
@@ -112,7 +148,8 @@ export default {
         minDate: 'today'
       },
       selectedContract: {},
-      editing: false
+      editing: false,
+      chosenObject: ''
     };
   },
 
@@ -123,10 +160,20 @@ export default {
         if (selectedContract) {
           this.editing = true;
           this.selectedContract = Object.assign({}, selectedContract);
+
+          let selectedObject = this.getFlatFromId(this.selectedContract.objectId);
+          if (selectedObject) {
+            this.chosenObject = 'Flat';
+          } else {
+            selectedObject = this.getCarFromId(this.selectedContract.objectId);
+            this.chosenObject = 'Car';
+          }
         }
       });
     }
     this.loadClients();
+    this.loadFlats();
+    this.loadCars();
   },
 
   methods: {
@@ -134,7 +181,9 @@ export default {
       'createContract',
       'updateContract',
       'loadContracts',
-      'loadClients'
+      'loadClients',
+      'loadFlats',
+      'loadCars'
     ]),
 
     resetAndGo () {
@@ -157,6 +206,7 @@ export default {
         alert(err);
       });
     },
+
     processSave () {
       this.editing ? this.saveContract() : this.saveNewContract();
     }
@@ -164,11 +214,15 @@ export default {
 
   computed: {
     ...mapGetters([
-      'getContractById'
+      'getContractById',
+      'getCarFromId',
+      'getFlatFromId'
     ]),
 
     ...mapState({
-      'clients': state => state.clients.clients
+      'clients': state => state.clients.clients,
+      'cars': state => state.cars.cars,
+      'flats': state => state.flats.flats
     })
   }
 };

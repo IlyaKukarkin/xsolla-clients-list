@@ -19,5 +19,13 @@ export default {
 
   LOAD_CLIENTS (state, payload) {
     state.clients = payload;
+  },
+
+  LOAD_FLATS (state, payload) {
+    state.flats = payload;
+  },
+
+  LOAD_CARS (state, payload) {
+    state.flats = payload;
   }
 };
