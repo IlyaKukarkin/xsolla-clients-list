@@ -2,7 +2,7 @@
   <div id="clients-list-view">
     <div class="container">
 
-      <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
+      <h3 class="title is-3">List of clients</h3>
 
       <div class="tabs is-centered is-large">
         <ul>
@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="client, key in sortedClients" >
+          <tr v-bind:key="client.clientId" v-for="client in sortedClients" >
             <td>
               <span class="subtitle is-5">{{ client.surname }}</span>
             </td>

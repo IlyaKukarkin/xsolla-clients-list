@@ -20,6 +20,10 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+      - run: # run ESLint
+          name: Run ESLint
+          command: |
+            npm lint
       - run: # run tests
           name: Run Tests
           command: |

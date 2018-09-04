@@ -2,7 +2,7 @@
   <div id="flats-list-view">
     <div class="container">
 
-      <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
+      <h3 class="title is-3">List of clients</h3>
 
       <div class="tabs is-centered is-large">
         <ul>
@@ -25,7 +25,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="flat, key in sortedFlats" >
+          <tr v-bind:key="flat.flatId" v-for="flat in sortedFlats" >
             <td>
               <span class="subtitle is-5">{{ flat.address }}</span>
             </td>

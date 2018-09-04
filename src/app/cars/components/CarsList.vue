@@ -1,7 +1,7 @@
 <template>
   <div id="cars-list-view">
 
-    <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
+    <h3 class="title is-3">List of clients</h3>
 
     <div class="container">
       <div class="tabs is-centered is-large">
@@ -25,7 +25,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="car, key in sortedCars" >
+          <tr v-bind:key="car.carId" v-for="car in sortedCars" >
             <td>
               <span class="subtitle is-5">{{ car.mark }}</span>
             </td>

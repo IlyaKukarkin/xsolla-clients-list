@@ -1,7 +1,7 @@
 <template>
   <div id="contracts-list-view">
 
-    <h3 class="title is-3" style="margin-bottom: 0pt">List of clients</h3>
+    <h3 class="title is-3">List of clients</h3>
 
     <div class="container">
       <div class="tabs is-centered is-large">
@@ -27,7 +27,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="contract, key in sortedContracts" >
+          <tr v-bind:key="contract.contractId" v-for="contract in sortedContracts" >
             <td>
               <span class="subtitle is-5">{{ contract.summ }}</span>
             </td>
@@ -91,7 +91,7 @@ export default {
       return client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
     },
 
-    getObjectType(objectId) {
+    getObjectType (objectId) {
       let selectedObject = this.getFlatFromId(objectId);
       if (selectedObject) {
         return 'Flat';
