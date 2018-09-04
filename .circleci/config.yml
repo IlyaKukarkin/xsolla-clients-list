@@ -1,5 +1,7 @@
 jobs:
   build:
+    environment:
+        CC_TEST_REPORTER_ID: 3fbe14435bb66d73bd53ad6c48ff53e6a235d760cc2f2f6851f10d229ea1a56c
     docker:
       - image: circleci/node:8
     steps:
@@ -22,5 +24,5 @@ jobs:
           name: Run Tests
           command: |
             ./cc-test-reporter before-build
-            npm test
+            npm test -- --coverage
             ./cc-test-reporter after-build --exit-code $?
