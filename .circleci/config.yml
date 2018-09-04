@@ -22,7 +22,7 @@ jobs:
             - ./node_modules
       - run: # run ESLint
           name: Run ESLint
-          override: ./node_modules/.bin/eslint --format=junit -o $CIRCLE_TEST_REPORTS/eslint/eslint.xml
+          command: ./node_modules/.bin/eslint --format=junit -o $CIRCLE_TEST_REPORTS/eslint/eslint.xml
       - run: # run tests
           name: Run Tests
           command: |
