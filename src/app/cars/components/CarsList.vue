@@ -1,9 +1,9 @@
 <template>
   <div id="cars-list-view">
-
-    <h3 class="title is-3">List of clients</h3>
-
     <div class="container">
+
+      <h3 class="title is-3">List of clients</h3>
+
       <div class="tabs is-centered is-large">
         <ul>
           <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>

@@ -1,9 +1,9 @@
 <template>
   <div id="contracts-list-view">
+    <div class="container">
 
     <h3 class="title is-3">List of clients</h3>
 
-    <div class="container">
       <div class="tabs is-centered is-large">
         <ul>
           <li class="is-active"><a>Contracts</a></li>
