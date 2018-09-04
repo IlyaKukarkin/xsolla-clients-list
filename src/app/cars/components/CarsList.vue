@@ -90,7 +90,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .table td, .table th {
     border-color: #bbbbbb;
     text-align: center;
