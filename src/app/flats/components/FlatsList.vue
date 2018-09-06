@@ -40,11 +40,12 @@
             </td>
             <td>
               <router-link class="button is-primary" :to="{ name: 'updateFlat', params: { flatId: flat.id } }">Edit</router-link>
-              <a class="button is-danger" @click="confirmDeleteFlat(flat)">Delete</a>
+              <a class="button is-danger" @click="askDeleteFlat(flat)">Delete</a>
             </td>
           </tr>
           </tbody>
         </table>
+        <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="flatAddressDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteFlatFunc"></DeleteWindow>
       </div>
     </div>
   </div>
@@ -52,9 +53,21 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import DeleteWindow from '../../components/deleteWindow';
 
 export default {
   name: 'flats-list-view',
+
+  components: { DeleteWindow },
+
+  data: () => {
+    return {
+      showDeleteWindow: false,
+      entityType: 'flat',
+      flatAddressDelete: '',
+      flatToDelete: {}
+    };
+  },
 
   mounted () {
     this.loadFlats();
@@ -65,10 +78,16 @@ export default {
       'deleteFlat',
       'loadFlats'
     ]),
-    confirmDeleteFlat (flat) {
-      if (confirm(`Are you sure you want to delete flat ${flat.address}?`)) {
-        this.deleteFlat(flat);
-      }
+
+    askDeleteFlat (flat) {
+      this.flatAddressDelete = flat.address;
+      this.flatToDelete = flat;
+      this.showDeleteWindow = true;
+    },
+
+    deleteFlatFunc () {
+      this.deleteFlat(this.flatToDelete);
+      this.showDeleteWindow = false;
     }
   },
 

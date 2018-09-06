@@ -48,11 +48,12 @@
             </td>
             <td>
               <router-link class="button is-primary" :to="{ name: 'updateContract', params: { contractId: contract.id } }">Edit</router-link>
-              <a class="button is-danger" @click="confirmDeleteContract(contract)">Delete</a>
+              <a class="button is-danger" @click="askDeleteContract(contract)">Delete</a>
             </td>
           </tr>
           </tbody>
         </table>
+        <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="contractSummDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteContractFunc"></DeleteWindow>
       </div>
   </div>
   </div>
@@ -60,9 +61,21 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
+import DeleteWindow from '../../components/deleteWindow';
 
 export default {
   name: 'contracts-list-view',
+
+  components: { DeleteWindow },
+
+  data: () => {
+    return {
+      showDeleteWindow: false,
+      entityType: 'contract',
+      contractSummDelete: '',
+      contractToDelete: {}
+    };
+  },
 
   created () {
     this.loadClients();
@@ -80,10 +93,15 @@ export default {
       'loadCars'
     ]),
 
-    confirmDeleteContract (contract) {
-      if (confirm(`Are you sure you want to delete this contract?`)) {
-        this.deleteContract(contract);
-      }
+    askDeleteContract (contract) {
+      this.contractSummDelete = contract.summ;
+      this.contractToDelete = contract;
+      this.showDeleteWindow = true;
+    },
+
+    deleteContractFunc () {
+      this.deleteContract(this.contractToDelete);
+      this.showDeleteWindow = false;
     },
 
     getClientFIO (clientId) {

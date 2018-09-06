@@ -40,11 +40,12 @@
             </td>
             <td>
               <router-link class="button is-primary" :to="{ name: 'updateCar', params: { carId: car.id } }">Edit</router-link>
-              <a class="button is-danger" @click="confirmDeleteCar(car)">Delete</a>
+              <a class="button is-danger" @click="askDeleteCar(car)">Delete</a>
             </td>
           </tr>
           </tbody>
         </table>
+        <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="carNameDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteCarFunc"></DeleteWindow>
       </div>
   </div>
   </div>
@@ -52,9 +53,21 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import DeleteWindow from '../../components/deleteWindow';
 
 export default {
   name: 'cars-list-view',
+
+  components: { DeleteWindow },
+
+  data: () => {
+    return {
+      showDeleteWindow: false,
+      entityType: 'car',
+      carNameDelete: '',
+      carToDelete: {}
+    };
+  },
 
   mounted () {
     this.loadCars();
@@ -65,10 +78,16 @@ export default {
       'deleteCar',
       'loadCars'
     ]),
-    confirmDeleteCar (car) {
-      if (confirm(`Are you sure you want to delete ${car.mark}?`)) {
-        this.deleteCar(car);
-      }
+
+    askDeleteCar (car) {
+      this.carNameDelete = car.mark + ' ' + car.model;
+      this.carToDelete = car;
+      this.showDeleteWindow = true;
+    },
+
+    deleteCarFunc () {
+      this.deleteCar(this.carToDelete);
+      this.showDeleteWindow = false;
     }
   },
 
