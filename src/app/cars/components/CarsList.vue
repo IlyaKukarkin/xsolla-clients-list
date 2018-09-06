@@ -2,7 +2,7 @@
   <div id="cars-list-view">
     <div class="container">
 
-      <h3 class="title is-3">List of clients</h3>
+      <h3 class="title is-3">Xsolla clients list</h3>
 
       <div class="tabs is-centered is-large">
         <ul>

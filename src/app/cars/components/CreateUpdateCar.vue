@@ -13,7 +13,8 @@
       <div class="field-body">
         <div class="field">
           <div class="control">
-            <input type="text" class="input" name="mark" v-model="selectedCar.mark">
+            <input type="text" class="input" v-bind:class="{ 'is-danger': markDanger }" name="mark" placeholder="Enter cars mark" v-model="selectedCar.mark">
+            <span class="has-text-danger" v-if="customErrors.mark.length" v-bind:key="error" v-for="error in customErrors.mark">{{error}}</span>
           </div>
         </div>
       </div>
@@ -25,7 +26,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" class="input" name="model" v-model="selectedCar.model">
+              <input type="text" class="input" v-bind:class="{ 'is-danger': modelDanger }" name="model" placeholder="Enter cars model" v-model="selectedCar.model">
+              <span class="has-text-danger" v-if="customErrors.model.length" v-bind:key="error" v-for="error in customErrors.model">{{error}}</span>
             </div>
           </div>
         </div>
@@ -37,7 +39,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" class="input" name="year" v-model="selectedCar.year">
+              <input type="number" class="input" v-bind:class="{ 'is-danger': yearDanger }" name="year" placeholder="Enter cars year of issue" v-model="selectedCar.year">
+              <span class="has-text-danger" v-if="customErrors.year.length" v-bind:key="error" v-for="error in customErrors.year">{{error}}</span>
             </div>
           </div>
         </div>
@@ -49,7 +52,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" class="input" name="number" v-model="selectedCar.number">
+              <input type="text" class="input" v-bind:class="{ 'is-danger': numberDanger }" name="number" placeholder="Enter cars plate number" v-model="selectedCar.number">
+              <span class="has-text-danger" v-if="customErrors.number.length" v-bind:key="error" v-for="error in customErrors.number">{{error}}</span>
             </div>
           </div>
         </div>
@@ -85,6 +89,16 @@ export default {
 
   data: () => {
     return {
+      customErrors: {
+        mark: [],
+        model: [],
+        number: [],
+        year: []
+      },
+      markDanger: false,
+      modelDanger: false,
+      numberDanger: false,
+      yearDanger: false,
       selectedCar: {},
       editing: false,
       showExistWindow: false,
@@ -132,8 +146,62 @@ export default {
       });
     },
 
+    checkForm () {
+      this.customErrors.mark = [];
+      this.customErrors.model = [];
+      this.customErrors.year = [];
+      this.customErrors.number = [];
+      this.markDanger = false;
+      this.modelDanger = false;
+      this.numberDanger = false;
+      this.yearDanger = false;
+
+      let hasErrors = false;
+
+      if (!this.selectedCar.mark) {
+        this.customErrors.mark.push('Cars mark is required!');
+        this.markDanger = true;
+        hasErrors = true;
+      }
+
+      if (!this.selectedCar.model) {
+        this.customErrors.model.push('Cars model is required!');
+        this.modelDanger = true;
+        hasErrors = true;
+      }
+
+      if (!this.selectedCar.number) {
+        this.customErrors.number.push('Cars plate number is required!');
+        this.numberDanger = true;
+        hasErrors = true;
+      } else {
+        let reg = /[ABEKMHOPCTYX]{1}[0-9]{1}[0-9]{1}[0-9]{1}[ABEKMHOPCTYX]{1}[ABEKMHOPCTYX]{1}$/;
+        if (!reg.test(this.selectedCar.number)) {
+          this.customErrors.number.push('Use only letters "ABEKMHOPCTYX". Example: A188BC');
+          this.numberDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedCar.year) {
+        this.customErrors.year.push('Cars year number is required!');
+        this.yearDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedCar.year > (new Date()).getFullYear() || this.selectedCar.year < 1945) {
+          this.customErrors.year.push('Year between 1945 and ', (new Date()).getFullYear(), '!');
+          this.yearDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      return !hasErrors;
+    },
+
     processSave () {
-      this.editing ? this.saveCar() : this.saveNewCar();
+      if (this.checkForm()) {
+        this.editing ? this.saveCar() : this.saveNewCar();
+      }
     }
   },
 

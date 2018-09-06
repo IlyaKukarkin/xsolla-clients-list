@@ -49,7 +49,7 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="email" v-model="selectedClient.email">
+                <input type="email" class="input" name="email" v-model="selectedClient.email">
               </div>
             </div>
           </div>
