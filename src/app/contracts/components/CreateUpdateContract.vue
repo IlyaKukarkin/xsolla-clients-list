@@ -121,6 +121,7 @@
         </div>
       </div>
       <div class="column"></div>
+      <AlreadyExistsWindow v-bind:class="{ 'is-active': showExistWindow }" v-bind:entity-type='entityType' v-on:ok="showExistWindow = false"></AlreadyExistsWindow>
     </form>
   </div>
 </template>
@@ -129,12 +130,14 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import AlreadyExistsWindow from '../../components/alreadyExistsWindow';
 
 export default {
   name: 'contracts-create-edit-view',
 
   components: {
-    flatPickr
+    flatPickr,
+    AlreadyExistsWindow
   },
 
   data: () => {
@@ -149,7 +152,9 @@ export default {
       },
       selectedContract: {},
       editing: false,
-      chosenObject: ''
+      chosenObject: '',
+      showExistWindow: false,
+      entityType: 'contract'
     };
   },
 
@@ -163,10 +168,9 @@ export default {
 
           let selectedObject = this.getFlatFromId(this.selectedContract.objectId);
           if (selectedObject) {
-            this.chosenObject = 'Flat';
-          } else {
-            selectedObject = this.getCarFromId(this.selectedContract.objectId);
             this.chosenObject = 'Car';
+          } else {
+            this.chosenObject = 'Flat';
           }
         }
       });
@@ -194,16 +198,16 @@ export default {
     saveNewContract () {
       this.createContract(this.selectedContract).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 
     saveContract () {
       this.updateContract(this.selectedContract).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 

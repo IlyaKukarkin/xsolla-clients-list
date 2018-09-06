@@ -128,6 +128,7 @@
         </div>
       </div>
       <div class="column"></div>
+      <AlreadyExistsWindow v-bind:class="{ 'is-active': showExistWindow }" v-bind:entity-type='entityType' v-on:ok="showExistWindow = false"></AlreadyExistsWindow>
     </form>
   </div>
 </template>
@@ -136,12 +137,14 @@
 import { mapActions, mapGetters } from 'vuex';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import AlreadyExistsWindow from '../../components/alreadyExistsWindow';
 
 export default {
   name: 'clients-create-edit-view',
 
   components: {
-    flatPickr
+    flatPickr,
+    AlreadyExistsWindow
   },
 
   data: () => {
@@ -151,7 +154,9 @@ export default {
         maxDate: 'today'
       },
       selectedClient: {},
-      editing: false
+      editing: false,
+      showExistWindow: false,
+      entityType: 'client'
     };
   },
 
@@ -182,16 +187,16 @@ export default {
     saveNewClient () {
       this.createClient(this.selectedClient).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 
     saveClient () {
       this.updateClient(this.selectedClient).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 

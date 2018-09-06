@@ -112,10 +112,10 @@ export default {
     getObjectType (objectId) {
       let selectedObject = this.getFlatFromId(objectId);
       if (selectedObject) {
-        return 'Flat';
+        return 'Car';
       } else {
         selectedObject = this.getCarFromId(objectId);
-        return 'Car';
+        return 'Flat';
       }
     }
   },

@@ -69,20 +69,26 @@
       </div>
     </div>
     <div class="column"></div>
+      <AlreadyExistsWindow v-bind:class="{ 'is-active': showExistWindow }" v-bind:entity-type='entityType' v-on:ok="showExistWindow = false"></AlreadyExistsWindow>
     </form>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import AlreadyExistsWindow from '../../components/alreadyExistsWindow';
 
 export default {
   name: 'cars-create-edit-view',
 
+  components: { AlreadyExistsWindow },
+
   data: () => {
     return {
       selectedCar: {},
-      editing: false
+      editing: false,
+      showExistWindow: false,
+      entityType: 'car'
     };
   },
 
@@ -113,16 +119,16 @@ export default {
     saveNewCar () {
       this.createCar(this.selectedCar).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 
     saveCar () {
       this.updateCar(this.selectedCar).then(() => {
         this.resetAndGo();
-      }).catch((err) => {
-        alert(err);
+      }).catch(() => {
+        this.showExistWindow = true;
       });
     },
 
