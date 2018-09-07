@@ -36,7 +36,7 @@
               <span class="subtitle is-5">{{ flat.area }}</span>
             </td>
             <td>
-              <span class="subtitle is-5">{{ flat.flor }}</span>
+              <span class="subtitle is-5">{{ flat.floor }}</span>
             </td>
             <td>
               <router-link class="button is-primary" :to="{ name: 'updateFlat', params: { flatId: flat.id } }">Edit</router-link>

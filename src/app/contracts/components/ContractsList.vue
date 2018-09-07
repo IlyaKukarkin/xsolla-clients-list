@@ -84,6 +84,10 @@ export default {
     this.loadCars();
   },
 
+  /* mounted () {
+    this.loadClients();
+  }, */
+
   methods: {
     ...mapActions([
       'deleteContract',
@@ -102,6 +106,7 @@ export default {
     deleteContractFunc () {
       this.deleteContract(this.contractToDelete);
       this.showDeleteWindow = false;
+      // this.loadClients();
     },
 
     getClientFIO (clientId) {
@@ -111,11 +116,11 @@ export default {
 
     getObjectType (objectId) {
       let selectedObject = this.getFlatFromId(objectId);
-      if (selectedObject) {
-        return 'Car';
-      } else {
-        selectedObject = this.getCarFromId(objectId);
+      if (typeof selectedObject === 'object') {
         return 'Flat';
+      } else {
+        // selectedObject = this.getCarFromId(objectId);
+        return 'Car';
       }
     }
   },

@@ -162,12 +162,24 @@ export default {
         this.customErrors.mark.push('Cars mark is required!');
         this.markDanger = true;
         hasErrors = true;
+      } else {
+        if (this.selectedCar.mark.length > 30) {
+          this.customErrors.mark.push('Cars mark is too long!');
+          this.markDanger = true;
+          hasErrors = true;
+        }
       }
 
       if (!this.selectedCar.model) {
         this.customErrors.model.push('Cars model is required!');
         this.modelDanger = true;
         hasErrors = true;
+      } else {
+        if (this.selectedCar.model.length > 30) {
+          this.customErrors.model.push('Car model is too long!');
+          this.modelDanger = true;
+          hasErrors = true;
+        }
       }
 
       if (!this.selectedCar.number) {

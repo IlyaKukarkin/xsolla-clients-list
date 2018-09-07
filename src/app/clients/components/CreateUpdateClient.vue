@@ -13,7 +13,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="surname" v-model="selectedClient.surname">
+                <input type="text" class="input" v-bind:class="{ 'is-danger': surnameDanger }" name="surname" placeholder="Input client's surname" v-model="selectedClient.surname">
+                <span class="has-text-danger" v-if="customErrors.surname.length" v-bind:key="error" v-for="error in customErrors.surname">{{error}}</span>
               </div>
             </div>
           </div>
@@ -25,7 +26,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="name" v-model="selectedClient.name">
+                <input type="text" class="input" v-bind:class="{ 'is-danger': nameDanger }" name="name" placeholder="Input client's name" v-model="selectedClient.name">
+                <span class="has-text-danger" v-if="customErrors.name.length" v-bind:key="error" v-for="error in customErrors.name">{{error}}</span>
               </div>
             </div>
           </div>
@@ -37,7 +39,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="patronymic" v-model="selectedClient.patronymic">
+                <input type="text" class="input" v-bind:class="{ 'is-danger': patronymicDanger }" name="patronymic" placeholder="Input client's patronymic" v-model="selectedClient.patronymic">
+                <span class="has-text-danger" v-if="customErrors.patronymic.length" v-bind:key="error" v-for="error in customErrors.patronymic">{{error}}</span>
               </div>
             </div>
           </div>
@@ -49,7 +52,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="email" class="input" name="email" v-model="selectedClient.email">
+                <input type="email" class="input" v-bind:class="{ 'is-danger': emailDanger }" name="email" placeholder="Input client's e-mail" v-model="selectedClient.email">
+                <span class="has-text-danger" v-if="customErrors.email.length" v-bind:key="error" v-for="error in customErrors.email">{{error}}</span>
               </div>
             </div>
           </div>
@@ -61,7 +65,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="phone" v-model="selectedClient.phone">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': phoneDanger }" name="phone" placeholder="Input client's phone" v-model="selectedClient.phone">
+                <span class="has-text-danger" v-if="customErrors.phone.length" v-bind:key="error" v-for="error in customErrors.phone">{{error}}</span>
               </div>
             </div>
           </div>
@@ -72,7 +77,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="text" class="input" name="address" v-model="selectedClient.address">
+                <input type="text" class="input" v-bind:class="{ 'is-danger': addressDanger }" name="address" placeholder="Input address of client" v-model="selectedClient.address">
+                <span class="has-text-danger" v-if="customErrors.address.length" v-bind:key="error" v-for="error in customErrors.address">{{error}}</span>
               </div>
             </div>
           </div>
@@ -84,7 +90,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="number" class="input" name="series" v-model="selectedClient.series">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': seriesDanger }" name="series" placeholder="Input passport series" v-model="selectedClient.series">
+                <span class="has-text-danger" v-if="customErrors.series.length" v-bind:key="error" v-for="error in customErrors.series">{{error}}</span>
               </div>
             </div>
           </div>
@@ -96,7 +103,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="number" class="input" name="number" v-model="selectedClient.number">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': numberDanger }" name="number" placeholder="Input passport number" v-model="selectedClient.number">
+                <span class="has-text-danger" v-if="customErrors.number.length" v-bind:key="error" v-for="error in customErrors.number">{{error}}</span>
               </div>
             </div>
           </div>
@@ -108,7 +116,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <flat-pickr class="input" v-model="selectedClient.birthDate" :config="config" name="birthDate" placeholder="Select a date"></flat-pickr>
+                <flat-pickr class="input" v-bind:class="{ 'is-danger': birthDateDanger }" v-model="selectedClient.birthDate" :config="config" name="birthDate" placeholder="Select a birth date"></flat-pickr>
+                <span class="has-text-danger" v-if="customErrors.birthDate.length" v-bind:key="error" v-for="error in customErrors.birthDate">{{error}}</span>
               </div>
             </div>
           </div>
@@ -153,6 +162,26 @@ export default {
         dateFormat: 'd-M-Y',
         maxDate: 'today'
       },
+      customErrors: {
+        surname: [],
+        name: [],
+        patronymic: [],
+        email: [],
+        phone: [],
+        address: [],
+        series: [],
+        number: [],
+        birthDate: []
+      },
+      surnameDanger: false,
+      nameDanger: false,
+      patronymicDanger: false,
+      emailDanger: false,
+      phoneDanger: false,
+      addressDanger: false,
+      seriesDanger: false,
+      birthDateDanger: false,
+      numberDanger: false,
       selectedClient: {},
       editing: false,
       showExistWindow: false,
@@ -200,8 +229,137 @@ export default {
       });
     },
 
+    checkForm () {
+      this.customErrors.surname = [];
+      this.customErrors.name = [];
+      this.customErrors.patronymic = [];
+      this.customErrors.email = [];
+      this.customErrors.phone = [];
+      this.customErrors.address = [];
+      this.customErrors.series = [];
+      this.customErrors.number = [];
+      this.customErrors.birthDate = [];
+      this.surnameDanger = false;
+      this.nameDanger = false;
+      this.patronymicDanger = false;
+      this.emailDanger = false;
+      this.phoneDanger = false;
+      this.addressDanger = false;
+      this.seriesDanger = false;
+      this.birthDateDanger = false;
+      this.numberDanger = false;
+
+      let hasErrors = false;
+
+      if (!this.selectedClient.surname) {
+        this.customErrors.surname.push('Surname is required!');
+        this.surnameDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.surname.length > 30) {
+          this.customErrors.surname.push('Surname is too long!');
+          this.surnameDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.name) {
+        this.customErrors.name.push('Name is required!');
+        this.nameDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.name.length > 30) {
+          this.customErrors.name.push('Name is too long!');
+          this.nameDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.patronymic) {
+        this.customErrors.patronymic.push('Patronymic is required!');
+        this.patronymicDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.patronymic.length > 30) {
+          this.customErrors.patronymic.push('Patronymic is too long');
+          this.patronymicDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.email) {
+        this.customErrors.email.push('E-mail is required!');
+        this.emailDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.email.length > 30) {
+          this.customErrors.email.push('E-mail is too long');
+          this.emailDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.phone) {
+        this.customErrors.phone.push('Phone number is required!');
+        this.phoneDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.phone.length > 30) {
+          this.customErrors.phone.push('Phone number is too long');
+          this.phoneDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.address) {
+        this.customErrors.address.push('Address is required!');
+        this.addressDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.address.length > 30) {
+          this.customErrors.address.push('Address is too long!');
+          this.addressDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.series) {
+        this.customErrors.series.push('Passport series is required!');
+        this.seriesDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.series.length !== 4) {
+          this.customErrors.series.push('Passport series isn\'t 4 digits!');
+          this.seriesDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.number) {
+        this.customErrors.number.push('Passport number is required!');
+        this.numberDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedClient.number.length !== 6) {
+          this.customErrors.number.push('Passport number isn\'t 6 digits!');
+          this.numberDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedClient.birthDate) {
+        this.customErrors.birthDate.push('Date of birth is required!');
+        this.birthDateDanger = true;
+        hasErrors = true;
+      }
+
+      return !hasErrors;
+    },
+
     processSave () {
-      this.editing ? this.saveClient() : this.saveNewClient();
+      if (this.checkForm()) {
+        this.editing ? this.saveClient() : this.saveNewClient();
+      }
     }
   },
 

@@ -6,7 +6,7 @@ const verifyUniqueFlat = (flats, flat) => {
     flt.address === flat.address &&
     flt.rooms === flat.rooms &&
     flt.area === flat.area &&
-    flt.flor === flat.flor)) { return false; }
+    flt.floor === flat.floor)) { return false; }
 
   return true;
 };

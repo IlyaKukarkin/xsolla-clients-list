@@ -13,7 +13,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="number" class="input" name="summ" v-model="selectedContract.summ">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': summDanger }" name="summ" placeholder="Input contract summ" v-model="selectedContract.summ">
+                <span class="has-text-danger" v-if="customErrors.summ.length" v-bind:key="error" v-for="error in customErrors.summ">{{error}}</span>
               </div>
             </div>
           </div>
@@ -25,7 +26,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="number" class="input" name="prePaid" v-model="selectedContract.prePaid">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': prePaidDanger }" name="prePaid" placeholder="Input prepaid for contract" v-model="selectedContract.prePaid">
+                <span class="has-text-danger" v-if="customErrors.prePaid.length" v-bind:key="error" v-for="error in customErrors.prePaid">{{error}}</span>
               </div>
             </div>
           </div>
@@ -37,7 +39,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <flat-pickr class="input" v-model="selectedContract.startDate" :config="configStartDate" name="startDate" placeholder="Select a date"></flat-pickr>
+                <flat-pickr class="input" v-bind:class="{ 'is-danger': startDateDanger }" v-model="selectedContract.startDate" :config="config" name="startDate" placeholder="Select a date"></flat-pickr>
+                <span class="has-text-danger" v-if="customErrors.startDate.length" v-bind:key="error" v-for="error in customErrors.startDate">{{error}}</span>
               </div>
             </div>
           </div>
@@ -49,7 +52,8 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <flat-pickr class="input" v-model="selectedContract.finishDate" :config="configFinishDate" name="finishDate" placeholder="Select a date"></flat-pickr>
+                <flat-pickr class="input" v-bind:class="{ 'is-danger': finishDateDanger }" v-model="selectedContract.finishDate" :config="config" name="finishDate" placeholder="Select a date"></flat-pickr>
+                <span class="has-text-danger" v-if="customErrors.finishDate.length" v-bind:key="error" v-for="error in customErrors.finishDate">{{error}}</span>
               </div>
             </div>
           </div>
@@ -61,11 +65,12 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <select class="select input" v-model="selectedContract.clientId">
-                  <option v-for="client in clients" v-bind:value="client.id" v-bind:key="client.id">
+                <select class="select input" v-bind:class="{ 'is-danger': clientIdDanger }" v-model="selectedContract.clientId">
+                  <option v-for="client in sortedClients" v-bind:value="client.id" v-bind:key="client.id">
                     {{ client.surname }}
                   </option>
                 </select>
+                <span class="has-text-danger" v-if="customErrors.clientId.length" v-bind:key="error" v-for="error in customErrors.clientId">{{error}}</span>
               </div>
             </div>
           </div>
@@ -92,16 +97,17 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <select v-if="chosenObject === 'Flat'" class="select input" v-model="selectedContract.objectId">
+                <select v-if="chosenObject === 'Flat'" class="select input" v-bind:class="{ 'is-danger': objectIdDanger }" v-model="selectedContract.objectId">
                   <option v-for="flat in flats" v-bind:value="flat.id" v-bind:key="flat.id">
                     {{ flat.address }}
                   </option>
                 </select>
-                <select v-if="chosenObject === 'Car'" class="select input" v-model="selectedContract.objectId">
+                <select v-if="chosenObject === 'Car'" class="select input" v-bind:class="{ 'is-danger': objectIdDanger }" v-model="selectedContract.objectId">
                   <option v-for="car in cars" v-bind:value="car.id" v-bind:key="car.id">
                     {{ car.mark }} {{ car.model }}
                   </option>
                 </select>
+                <span class="has-text-danger" v-if="customErrors.objectId.length" v-bind:key="error" v-for="error in customErrors.objectId">{{error}}</span>
               </div>
             </div>
           </div>
@@ -128,9 +134,9 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import AlreadyExistsWindow from '../../components/alreadyExistsWindow';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import AlreadyExistsWindow from '../../components/alreadyExistsWindow';
 
 export default {
   name: 'contracts-create-edit-view',
@@ -142,17 +148,27 @@ export default {
 
   data: () => {
     return {
-      configStartDate: {
+      config: {
         dateFormat: 'd-M-Y',
         minDate: 'today'
       },
-      configFinishDate: {
-        dateFormat: 'd-M-Y',
-        minDate: 'today'
+      customErrors: {
+        summ: [],
+        prePaid: [],
+        startDate: [],
+        finishDate: [],
+        clientId: [],
+        objectId: []
       },
+      summDanger: false,
+      prePaidDanger: false,
+      startDateDanger: false,
+      finishDateDanger: false,
+      clientIdDanger: false,
+      objectIdDanger: false,
       selectedContract: {},
       editing: false,
-      chosenObject: '',
+      chosenObject: 'Flat',
       showExistWindow: false,
       entityType: 'contract'
     };
@@ -167,10 +183,10 @@ export default {
           this.selectedContract = Object.assign({}, selectedContract);
 
           let selectedObject = this.getFlatFromId(this.selectedContract.objectId);
-          if (selectedObject) {
-            this.chosenObject = 'Car';
-          } else {
+          if (typeof selectedObject === 'object') {
             this.chosenObject = 'Flat';
+          } else {
+            this.chosenObject = 'Car';
           }
         }
       });
@@ -211,8 +227,83 @@ export default {
       });
     },
 
+    checkForm () {
+      this.customErrors.summ = [];
+      this.customErrors.prePaid = [];
+      this.customErrors.startDate = [];
+      this.customErrors.finishDate = [];
+      this.customErrors.clientId = [];
+      this.customErrors.objectId = [];
+      this.summDanger = false;
+      this.prePaidDanger = false;
+      this.startDateDanger = false;
+      this.finishDateDanger = false;
+      this.clientIdDanger = false;
+      this.objectIdDanger = false;
+
+      let hasErrors = false;
+
+      if (!this.selectedContract.summ) {
+        this.customErrors.summ.push('Contract summ is required!');
+        this.summDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedContract.summ > 99999999 || this.selectedContract.summ < 1) {
+          this.customErrors.summ.push('Contract summ must be positive and less than 99999999!');
+          this.summDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedContract.prePaid) {
+        this.customErrors.prePaid.push('Cars model is required!');
+        this.prePaidDanger = true;
+        hasErrors = true;
+      } else {
+        if (this.selectedContract.prePaid < 0 || this.selectedContract.prePaid > this.selectedContract.summ) {
+          this.customErrors.prePaid.push('Prepaid must be more than 0 and less or equal than contract summ!');
+          this.prePaidDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedContract.startDate) {
+        this.customErrors.startDate.push('Start date is required!');
+        this.startDateDanger = true;
+        hasErrors = true;
+      }
+
+      if (!this.selectedContract.finishDate) {
+        this.customErrors.finishDate.push('Finish date is required!');
+        this.finishDateDanger = true;
+        hasErrors = true;
+      } else {
+        if (Date.parse(this.selectedContract.startDate) >= Date.parse(this.selectedContract.finishDate)) {
+          this.customErrors.finishDate.push('Finish date must be later than start date!');
+          this.finishDateDanger = true;
+          hasErrors = true;
+        }
+      }
+
+      if (!this.selectedContract.clientId) {
+        this.customErrors.clientId.push('Client is required!');
+        this.clientIdDanger = true;
+        hasErrors = true;
+      }
+
+      if (!this.selectedContract.objectId) {
+        this.customErrors.objectId.push('Object of evaluation is required!');
+        this.objectIdDanger = true;
+        hasErrors = true;
+      }
+
+      return !hasErrors;
+    },
+
     processSave () {
-      this.editing ? this.saveContract() : this.saveNewContract();
+      if (this.checkForm()) {
+        this.editing ? this.saveContract() : this.saveNewContract();
+      }
     }
   },
 
@@ -227,7 +318,17 @@ export default {
       'clients': state => state.clients.clients,
       'cars': state => state.cars.cars,
       'flats': state => state.flats.flats
-    })
+    }),
+
+    sortedClients () {
+      let sortedKeys = Object.keys(this.clients).sort((a, b) => {
+        return this.clients[a].surname.localeCompare(this.clients[b].surname);
+      });
+
+      return sortedKeys.map((key) => {
+        return this.clients[key];
+      });
+    }
   }
 };
 </script>

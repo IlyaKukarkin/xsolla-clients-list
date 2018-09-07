@@ -17,10 +17,6 @@ const verifyUniqueContract = (contracts, contract) => {
 };
 
 export const createContract = ({ commit, state }, data) => {
-  if (Date.parse(data.startDate) >= Date.parse(data.finishDate)) {
-    return Promise.reject(new Error('Start Date must be before Finish Date!'));
-  }
-
   let unique = verifyUniqueContract(state.contracts, data);
 
   if (!unique) {
