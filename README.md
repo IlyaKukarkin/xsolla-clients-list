@@ -2,18 +2,23 @@
 
 > Xsolla summer school 2018 graduation work
 
-<a href="https://xsolla-clients-list.herokuapp.com/" target="_blank">`Demo on heroku`</a>
-
 [![INSERT YOUR GRAPHIC HERE](https://i.gyazo.com/f003bfeaefb8c58e8f8af86ba6ebe527.png)]()
 
-## Table of Contents
+## Table of Content
 
+- [Demo](#demo)
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
 - [Technologies](#technologies)
 - [Tests](#tests)
 - [Support](#support)
+
+---
+
+## Demo
+
+Demo on heroku **https://xsolla-clients-list.herokuapp.com/**
 
 ---
 
