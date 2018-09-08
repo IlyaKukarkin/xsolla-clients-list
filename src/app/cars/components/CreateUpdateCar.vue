@@ -1,7 +1,8 @@
 <template>
   <div id="cars-create-edit-view">
 
-    <h3 class="title is-3" style="margin-bottom: 20pt">Add car</h3>
+    <h3 v-if="!editing" class="title is-3" style="margin-bottom: 20pt">Add car</h3>
+    <h3 v-else class="title is-3" style="margin-bottom: 20pt">Update car</h3>
 
     <form class="columns" @submit.prevent="processSave">
     <div class="column"></div>

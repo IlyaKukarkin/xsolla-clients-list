@@ -84,10 +84,6 @@ export default {
     this.loadCars();
   },
 
-  /* mounted () {
-    this.loadClients();
-  }, */
-
   methods: {
     ...mapActions([
       'deleteContract',
@@ -106,7 +102,6 @@ export default {
     deleteContractFunc () {
       this.deleteContract(this.contractToDelete);
       this.showDeleteWindow = false;
-      // this.loadClients();
     },
 
     getClientFIO (clientId) {

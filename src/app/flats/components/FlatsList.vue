@@ -45,6 +45,7 @@
           </tr>
           </tbody>
         </table>
+        <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="flatAddressDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteFlatFunc"></DeleteWindow>
       </div>
     </div>
@@ -54,15 +55,17 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
+import inContractWindow from '../../components/inContractWindow';
 
 export default {
   name: 'flats-list-view',
 
-  components: { DeleteWindow },
+  components: { DeleteWindow, inContractWindow },
 
   data: () => {
     return {
       showDeleteWindow: false,
+      showInContractWindow: false,
       entityType: 'flat',
       flatAddressDelete: '',
       flatToDelete: {}
@@ -80,9 +83,13 @@ export default {
     ]),
 
     askDeleteFlat (flat) {
-      this.flatAddressDelete = flat.address;
-      this.flatToDelete = flat;
-      this.showDeleteWindow = true;
+      if (flat.contractId) {
+        this.showInContractWindow = true;
+      } else {
+        this.flatAddressDelete = flat.address;
+        this.flatToDelete = flat;
+        this.showDeleteWindow = true;
+      }
     },
 
     deleteFlatFunc () {

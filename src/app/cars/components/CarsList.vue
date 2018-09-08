@@ -45,6 +45,7 @@
           </tr>
           </tbody>
         </table>
+        <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="carNameDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteCarFunc"></DeleteWindow>
       </div>
   </div>
@@ -54,15 +55,17 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
+import inContractWindow from '../../components/inContractWindow';
 
 export default {
   name: 'cars-list-view',
 
-  components: { DeleteWindow },
+  components: { DeleteWindow, inContractWindow },
 
   data: () => {
     return {
       showDeleteWindow: false,
+      showInContractWindow: false,
       entityType: 'car',
       carNameDelete: '',
       carToDelete: {}
@@ -80,9 +83,13 @@ export default {
     ]),
 
     askDeleteCar (car) {
-      this.carNameDelete = car.mark + ' ' + car.model;
-      this.carToDelete = car;
-      this.showDeleteWindow = true;
+      if (car.contractId) {
+        this.showInContractWindow = true;
+      } else {
+        this.carNameDelete = car.mark + ' ' + car.model;
+        this.carToDelete = car;
+        this.showDeleteWindow = true;
+      }
     },
 
     deleteCarFunc () {

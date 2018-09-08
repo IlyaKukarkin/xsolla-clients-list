@@ -65,6 +65,7 @@
           </tr>
         </tbody>
       </table>
+        <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="clientFIODelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteClientFunc"></DeleteWindow>
       </div>
     </div>
@@ -74,15 +75,17 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
+import inContractWindow from '../../components/inContractWindow';
 
 export default {
   name: 'clients-list-view',
 
-  components: { DeleteWindow },
+  components: { DeleteWindow, inContractWindow },
 
   data: () => {
     return {
       showDeleteWindow: false,
+      showInContractWindow: false,
       entityType: 'client',
       clientFIODelete: '',
       clientToDelete: {}
@@ -100,9 +103,13 @@ export default {
     ]),
 
     askDeleteClient (client) {
-      this.clientFIODelete = client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
-      this.clientToDelete = client;
-      this.showDeleteWindow = true;
+      if (client.contractId) {
+        this.showInContractWindow = true;
+      } else {
+        this.clientFIODelete = client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
+        this.clientToDelete = client;
+        this.showDeleteWindow = true;
+      }
     },
 
     deleteClientFunc () {
