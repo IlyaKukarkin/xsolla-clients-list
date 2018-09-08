@@ -4,7 +4,10 @@ import getters from '../src/app/contracts/vuex/getters';
 
 export default {
   state: {
-    contracts: {}
+    contracts: {},
+    clients: {},
+    cars: {},
+    flats: {},
   },
   mutations,
   getters,

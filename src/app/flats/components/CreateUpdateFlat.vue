@@ -52,7 +52,7 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <input type="number" class="input" v-bind:class="{ 'is-danger': florDanger }" name="flor" placeholder="Input flat's floor" v-model="selectedFlat.floor">
+                <input type="number" class="input" v-bind:class="{ 'is-danger': floorDanger }" name="flor" placeholder="Input flat's floor" v-model="selectedFlat.floor">
                 <span class="has-text-danger" v-if="customErrors.floor.length" v-bind:key="error" v-for="error in customErrors.floor">{{error}}</span>
               </div>
             </div>
@@ -200,12 +200,12 @@ export default {
 
       if (!this.selectedFlat.floor) {
         this.customErrors.floor.push('Floor of flat is required!');
-        this.florDanger = true;
+        this.floorDanger = true;
         hasErrors = true;
       } else {
         if (this.selectedFlat.floor < 1 || this.selectedFlat.rooms > 250) {
           this.customErrors.floor.push('Floor of flat must be positive and less than 250!');
-          this.florDanger = true;
+          this.floorDanger = true;
           hasErrors = true;
         }
       }

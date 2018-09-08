@@ -26,16 +26,10 @@ export const createContract = ({ commit, state }, data) => {
   let id = guid();
   let contract = Object.assign({ id: id }, data);
   commit('CREATE_CONTRACT', {contract: contract});
-  saveContract(contract).then((value) => {
-    // we've saved the client, what now
-  });
+  saveContract(contract);
 };
 
 export const updateContract = ({ commit, state }, data) => {
-  if (Date.parse(data.startDate) >= Date.parse(data.finishDate)) {
-    return Promise.reject(new Error('Start Date must be before Finish Date!'));
-  }
-
   let unique = verifyUniqueContract(state.contracts, data);
 
   if (!unique) {
@@ -52,8 +46,6 @@ export const deleteContract = ({ commit }, data) => {
 };
 
 export const loadContracts = (state) => {
-  // loads clients only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.contracts || Object.keys(state.contracts).length === 0) {
     return fetchContracts().then((res) => {
       state.commit('LOAD_CONTRACTS', res);
@@ -62,8 +54,6 @@ export const loadContracts = (state) => {
 };
 
 export const loadClients = (state) => {
-  // loads clients only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.clients || Object.keys(state.clients).length === 0) {
     return fetchClients().then((res) => {
       state.commit('LOAD_CLIENTS', res);
@@ -72,8 +62,6 @@ export const loadClients = (state) => {
 };
 
 export const loadFlats = (state) => {
-  // loads flats only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.flats || Object.keys(state.flats).length === 0) {
     return fetchFlats().then((res) => {
       state.commit('LOAD_FLATS', res);
@@ -82,8 +70,6 @@ export const loadFlats = (state) => {
 };
 
 export const loadCars = (state) => {
-  // loads cars only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.cars || Object.keys(state.cars).length === 0) {
     return fetchCars().then((res) => {
       state.commit('LOAD_CARS', res);

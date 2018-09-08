@@ -16,9 +16,10 @@ export const saveClient = (client) => {
   ).then((value) => {
     return value;
   }).catch((err) => {
-    console.log('oops! the client was too far gone, there was nothing we could do to save him ', err);
+    console.log('Error with saving client', err);
   });
 };
+
 export const deleteClient = (client) => {
   return localforage.removeItem(
     CLIENT_NAMESPACE + client.id

@@ -1,30 +1,74 @@
-# xsolla-clients-list
+# Xsolla-clients-list
 
-> A Vue.js project
+> Xsolla summer school 2018 graduation work
 
-## Build Setup
+[![INSERT YOUR GRAPHIC HERE](https://i.gyazo.com/f003bfeaefb8c58e8f8af86ba6ebe527.png)]()
 
-``` bash
-# install dependencies
-npm install
+## Table of Content
 
-# serve with hot reload at localhost:8080
-npm run dev
+- [Demo](#demo)
+- [Installation](#installation)
+- [Features](#features)
+- [Usage](#usage)
+- [Technologies](#technologies)
+- [Tests](#tests)
+- [Support](#support)
 
-# build for production with minification
-npm run build
+---
 
-# build for production and view the bundle analyzer report
-npm run build --report
+## Demo
 
-# run unit tests
-npm run unit
+Demo on heroku **https://xsolla-clients-list.herokuapp.com/**
 
-# run e2e tests
-npm run e2e
+---
 
-# run all tests
-npm test
+## Installation
+
+### Clone
+
+- Clone this repo to your local machine using `https://github.com/IlyaKukarkin/xsolla-clients-list/`
+
+### Setup
+
+> now install npm dependencies
+
+```shell
+$ npm install
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+---
+
+## Features
+
+- Some features description
+- Some features description.
+
+---
+
+## Usage
+
+- Some usage description
+- Some usage description.
+
+---
+
+## Technologies
+
+- Some technologies description
+- Some technologies description.
+
+---
+
+## Tests
+
+- Some tests description
+- Some tests description.
+
+---
+
+## Support
+
+Reach out to me at one of the following places!
+
+- E-mail at ilya1196@yandex.ru
+- Telegram at <a href="https://t.me/ilyakukarkin" target="_blank">`@ilyakukarkin`</a>
