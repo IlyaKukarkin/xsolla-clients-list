@@ -127,7 +127,7 @@
       </table>
 
         <back-to-top bottom="50px" right="50px" visibleoffset="200">
-          <button class="button is-link">To the top</button>
+          <button class="button btn-to-top">Top</button>
         </back-to-top>
         <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="clientFIODelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteClientFunc"></DeleteWindow>
@@ -222,5 +222,15 @@ export default {
     flex-grow: 1;
     flex-direction: column;
     justify-content: center;
+  }
+  .btn-to-top {
+    width: 60px;
+    height: 60px;
+    padding: 10px 10px;
+    border-radius: 50%;
+    border-color: rgb(7,103,242);
+    font-size: 24px;
+    line-height: 22px;
+    opacity: .6;
   }
 </style>
