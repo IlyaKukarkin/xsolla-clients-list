@@ -32,42 +32,28 @@
           <tbody v-for="client in sortedClients" v-bind:key="client.id">
           <tr>
             <td>{{ clientKeyNames[0] }}</td>
-            <td>{{ client.surname }}</td>
+            <td>{{ getClientFIO(client.surname, client.name, client.patronymic) }}</td>
           </tr>
           <tr>
             <td>{{ clientKeyNames[1] }}</td>
-            <td>{{ client.name }}</td>
-          </tr>
-          <tr>
-            <td>{{ clientKeyNames[2] }}</td>
-            <td>{{ client.patronymic }}</td>
-          </tr>
-          <tr>
-            <td>{{ clientKeyNames[3] }}</td>
             <td>{{ client.email }}</td>
           </tr>
           <tr>
-            <td>{{ clientKeyNames[4] }}</td>
+            <td>{{ clientKeyNames[2] }}</td>
             <td>{{ client.phone }}</td>
           </tr>
           <tr>
-            <td>{{ clientKeyNames[5] }}</td>
+            <td>{{ clientKeyNames[3] }}</td>
             <td>{{ client.address }}</td>
           </tr>
           <tr>
-            <td>{{ clientKeyNames[6] }}</td>
-            <td>{{ client.series }}</td>
-          </tr>
-          <tr>
-            <td>{{ clientKeyNames[7] }}</td>
-            <td>{{ client.number }}</td>
-          </tr>
-          <tr>
-            <td>{{ clientKeyNames[8] }}</td>
+            <td>{{ clientKeyNames[4] }}</td>
             <td>{{ client.birthDate }}</td>
           </tr>
           <tr>
-            <td colspan="2"><router-link class="button is-primary" :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
+            <td colspan="2">
+              <a class="button is-warning" @click="showClientInfo(client)">More</a>
+              <router-link class="button is-primary" :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
               <a class="button is-danger" @click="askDeleteClient(client)">Delete</a>
             </td>
           </tr>
@@ -77,14 +63,10 @@
       <table class="table is-bordered is-hidden-touch">
         <thead>
           <tr>
-            <th>Surname</th>
-            <th>Name</th>
-            <th>Patronymic</th>
+            <th>Full name</th>
             <th>E-mail</th>
             <th>Phone</th>
             <th>Address</th>
-            <th>Passport series</th>
-            <th>Passport number</th>
             <th>Birth Date</th>
             <th> <router-link class="button is-link" :to="{ name: 'createClient' }">Add client</router-link> </th>
           </tr>
@@ -92,13 +74,7 @@
         <tbody>
           <tr v-bind:key="client.clientId" v-for="client in sortedClients" >
             <td>
-              <span class="subtitle is-5">{{ client.surname }}</span>
-            </td>
-            <td>
-              <span class="subtitle is-5">{{ client.name }}</span>
-            </td>
-            <td>
-              <span class="subtitle is-5">{{ client.patronymic }}</span>
+              <span class="subtitle is-5">{{ getClientFIO(client.surname, client.name, client.patronymic) }}</span>
             </td>
             <td>
               <span class="subtitle is-5">{{ client.email }}</span>
@@ -110,15 +86,10 @@
               <span class="subtitle is-5">{{ client.address }}</span>
             </td>
             <td>
-              <span class="subtitle is-5">{{ client.series }}</span>
-            </td>
-            <td>
-              <span class="subtitle is-5">{{ client.number }}</span>
-            </td>
-            <td>
               <span class="subtitle is-5">{{ client.birthDate }}</span>
             </td>
             <td>
+              <a class="button is-warning" @click="showClientInfo(client)">More</a>
               <router-link class="button is-primary" :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
               <a class="button is-danger" @click="askDeleteClient(client)">Delete</a>
             </td>
@@ -130,6 +101,7 @@
           <button class="button btn-to-top">Top</button>
         </back-to-top>
         <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
+        <client-info-window v-bind:class="{ 'is-active': showClientWindow }" v-bind:client="clientInfo" v-on:ok="showClientWindow = false"></client-info-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="clientFIODelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteClientFunc"></DeleteWindow>
       </div>
     </div>
@@ -140,21 +112,24 @@
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
 import inContractWindow from '../../components/inContractWindow';
+import clientInfoWindow from '../../components/clientInfoWindow';
 import BackToTop from 'vue-backtotop';
 
 export default {
   name: 'clients-list-view',
 
-  components: { DeleteWindow, inContractWindow, BackToTop },
+  components: { DeleteWindow, inContractWindow, BackToTop, clientInfoWindow },
 
   data: () => {
     return {
       showDeleteWindow: false,
       showInContractWindow: false,
+      showClientWindow: false,
       entityType: 'client',
       clientFIODelete: '',
       clientToDelete: {},
-      clientKeyNames: ['Surname', 'Name', 'Patronymic', 'E-mail', 'Phone', 'Address', 'Passport series', 'Passport number', 'Birth Date']
+      clientInfo: {},
+      clientKeyNames: ['Full name', 'E-mail', 'Phone', 'Address', 'Birth Date']
     };
   },
 
@@ -172,10 +147,19 @@ export default {
       if (client.contractId) {
         this.showInContractWindow = true;
       } else {
-        this.clientFIODelete = client.surname + ' ' + client.name.substring(0, 1).toUpperCase() + '. ' + client.patronymic.substring(0, 1).toUpperCase() + '.';
+        this.clientFIODelete = this.getClientFIO(client.surname, client.name, client.patronymic);
         this.clientToDelete = client;
         this.showDeleteWindow = true;
       }
+    },
+
+    showClientInfo (client) {
+      this.clientInfo = client;
+      this.showClientWindow = true;
+    },
+
+    getClientFIO (surname, name, patronymic) {
+      return surname + ' ' + name.substring(0, 1).toUpperCase() + '. ' + patronymic.substring(0, 1).toUpperCase() + '.';
     },
 
     deleteClientFunc () {
