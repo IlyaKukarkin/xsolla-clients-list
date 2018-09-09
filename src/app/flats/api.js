@@ -16,7 +16,7 @@ export const saveFlat = (flat) => {
   ).then((value) => {
     return value;
   }).catch((err) => {
-    console.log('oops! the flat was too far gone, there was nothing we could do to save him ', err);
+    console.log('Error with saving flat ', err);
   });
 };
 export const deleteFlat = (flat) => {

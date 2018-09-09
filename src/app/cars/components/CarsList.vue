@@ -4,7 +4,7 @@
 
       <h3 class="title is-3">Xsolla clients list</h3>
 
-      <div class="tabs is-centered is-large">
+      <div class="tabs is-centered is-large is-hidden-touch">
         <ul>
           <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>
           <li><router-link :to="{ name: 'clientsListView' }">Clients</router-link></li>
@@ -13,8 +13,48 @@
         </ul>
       </div>
 
+      <div class="menu is-hidden-desktop" style="margin-bottom: 20px">
+        <ul class="menu-list">
+          <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>
+          <li><router-link :to="{ name: 'clientsListView' }">Clients</router-link></li>
+          <li><a class="is-active">Cars</a></li>
+          <li><router-link :to="{ name: 'flatsListView' }">Flats</router-link></li>
+        </ul>
+      </div>
+
       <div class="hero">
-        <table class="table is-bordered">
+        <table class="table is-bordered is-hidden-desktop">
+          <thead>
+           <td colspan="2" style="border-width: 0 0 4px 0;">
+            <router-link class="button is-link is-center" :to="{ name: 'createCar' }">Add car</router-link>
+           </td>
+          </thead>
+          <tbody v-for="car in sortedCars" v-bind:key="car.id">
+              <tr>
+                <td>{{ carKeyNames[0] }}</td>
+                <td>{{ car.mark }}</td>
+              </tr>
+              <tr>
+                <td>{{ carKeyNames[1] }}</td>
+                <td>{{ car.model }}</td>
+              </tr>
+              <tr>
+                <td>{{ carKeyNames[2] }}</td>
+                <td>{{ car.year }}</td>
+              </tr>
+              <tr>
+                <td>{{ carKeyNames[3] }}</td>
+                <td>{{ car.number }}</td>
+              </tr>
+              <tr>
+                <td colspan="2"><router-link class="button is-primary" :to="{ name: 'updateCar', params: { carId: car.id } }">Edit</router-link>
+                  <a class="button is-danger" @click="askDeleteCar(car)">Delete</a>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+
+        <table class="table is-bordered is-hidden-touch">
           <thead>
           <tr>
             <th>Mark</th>
@@ -45,6 +85,10 @@
           </tr>
           </tbody>
         </table>
+
+        <back-to-top bottom="50px" right="50px" visibleoffset="200">
+          <button class="button is-link">To the top</button>
+        </back-to-top>
         <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="carNameDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteCarFunc"></DeleteWindow>
       </div>
@@ -56,19 +100,23 @@
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
 import inContractWindow from '../../components/inContractWindow';
+import BackToTop from 'vue-backtotop';
 
 export default {
   name: 'cars-list-view',
 
-  components: { DeleteWindow, inContractWindow },
+  components: { DeleteWindow, inContractWindow, BackToTop },
 
   data: () => {
     return {
       showDeleteWindow: false,
       showInContractWindow: false,
+      showNav: false,
+      showDesktopNav: true,
       entityType: 'car',
       carNameDelete: '',
-      carToDelete: {}
+      carToDelete: {},
+      carKeyNames: ['Mark', 'Model', 'Year', 'Number']
     };
   },
 
@@ -126,7 +174,15 @@ export default {
     background-color: rgba(187, 93, 79, 0.27);
     font-size: 14pt;
   }
-  tbody tr {
+  tbody:nth-child(odd) {
+    background-color: rgba(187, 93, 79, 0.27);
+  }
+  tbody:nth-child(even) {
     background-color: rgba(34, 109, 59, 0.2);
+  }
+  .navbar-item.navbar-center {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>

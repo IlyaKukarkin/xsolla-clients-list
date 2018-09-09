@@ -4,7 +4,7 @@
 
       <h3 class="title is-3">Xsolla clients list</h3>
 
-      <div class="tabs is-centered is-large">
+      <div class="tabs is-centered is-large is-hidden-touch">
         <ul>
           <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>
           <li class="is-active"><a>Clients</a></li>
@@ -13,8 +13,68 @@
         </ul>
       </div>
 
+      <div class="menu is-hidden-desktop" style="margin-bottom: 20px">
+        <ul class="menu-list">
+          <li><router-link :to="{ name: 'contractsListView' }">Contracts</router-link></li>
+          <li><a class="is-active">Clients</a></li>
+          <li><router-link :to="{ name: 'carsListView' }">Cars</router-link></li>
+          <li><router-link :to="{ name: 'flatsListView' }">Flats</router-link></li>
+        </ul>
+      </div>
+
       <div class="hero">
-      <table class="table is-bordered">
+        <table class="table is-bordered is-hidden-desktop">
+          <thead>
+          <td colspan="2" style="border-width: 0 0 4px 0;">
+            <router-link class="button is-link is-center" :to="{ name: 'createClient' }">Add client</router-link>
+          </td>
+          </thead>
+          <tbody v-for="client in sortedClients" v-bind:key="client.id">
+          <tr>
+            <td>{{ clientKeyNames[0] }}</td>
+            <td>{{ client.surname }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[1] }}</td>
+            <td>{{ client.name }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[2] }}</td>
+            <td>{{ client.patronymic }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[3] }}</td>
+            <td>{{ client.email }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[4] }}</td>
+            <td>{{ client.phone }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[5] }}</td>
+            <td>{{ client.address }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[6] }}</td>
+            <td>{{ client.series }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[7] }}</td>
+            <td>{{ client.number }}</td>
+          </tr>
+          <tr>
+            <td>{{ clientKeyNames[8] }}</td>
+            <td>{{ client.birthDate }}</td>
+          </tr>
+          <tr>
+            <td colspan="2"><router-link class="button is-primary" :to="{ name: 'updateClient', params: { clientId: client.id } }">Edit</router-link>
+              <a class="button is-danger" @click="askDeleteClient(client)">Delete</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+      <table class="table is-bordered is-hidden-touch">
         <thead>
           <tr>
             <th>Surname</th>
@@ -65,6 +125,10 @@
           </tr>
         </tbody>
       </table>
+
+        <back-to-top bottom="50px" right="50px" visibleoffset="200">
+          <button class="button is-link">To the top</button>
+        </back-to-top>
         <in-contract-window v-bind:class="{ 'is-active': showInContractWindow }" v-bind:entity-type='entityType' v-on:ok="showInContractWindow = false"></in-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="clientFIODelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteClientFunc"></DeleteWindow>
       </div>
@@ -76,11 +140,12 @@
 import { mapState, mapActions } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
 import inContractWindow from '../../components/inContractWindow';
+import BackToTop from 'vue-backtotop';
 
 export default {
   name: 'clients-list-view',
 
-  components: { DeleteWindow, inContractWindow },
+  components: { DeleteWindow, inContractWindow, BackToTop },
 
   data: () => {
     return {
@@ -88,7 +153,8 @@ export default {
       showInContractWindow: false,
       entityType: 'client',
       clientFIODelete: '',
-      clientToDelete: {}
+      clientToDelete: {},
+      clientKeyNames: ['Surname', 'Name', 'Patronymic', 'E-mail', 'Phone', 'Address', 'Passport series', 'Passport number', 'Birth Date']
     };
   },
 
@@ -146,7 +212,15 @@ export default {
     background-color: rgba(187, 93, 79, 0.27);
     font-size: 14pt;
   }
-  tbody tr {
+  tbody:nth-child(odd) {
+    background-color: rgba(187, 93, 79, 0.27);
+  }
+  tbody:nth-child(even) {
     background-color: rgba(34, 109, 59, 0.2);
+  }
+  .navbar-item.navbar-center {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>

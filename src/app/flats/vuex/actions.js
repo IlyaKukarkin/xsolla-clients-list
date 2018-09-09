@@ -21,9 +21,7 @@ export const createFlat = ({ commit, state }, data) => {
   let id = guid();
   let flat = Object.assign({ id: id }, data);
   commit('CREATE_FLAT', {flat: flat});
-  saveFlat(flat).then((value) => {
-    // we've saved the flat, what now
-  });
+  saveFlat(flat);
 };
 
 export const updateFlat = ({ commit, state }, data) => {
@@ -43,8 +41,6 @@ export const deleteFlat = ({ commit }, data) => {
 };
 
 export const loadFlats = (state) => {
-  // loads flats only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.flats || Object.keys(state.flats).length === 0) {
     return fetchFlats().then((res) => {
       state.commit('LOAD_FLATS', res);

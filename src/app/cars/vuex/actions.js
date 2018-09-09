@@ -21,9 +21,7 @@ export const createCar = ({ commit, state }, data) => {
   let id = guid();
   let car = Object.assign({ id: id }, data);
   commit('CREATE_CAR', {car: car});
-  saveCar(car).then((value) => {
-    // we've saved the car, what now
-  });
+  saveCar(car);
 };
 
 export const updateCar = ({ commit, state }, data) => {
@@ -43,8 +41,6 @@ export const deleteCar = ({ commit }, data) => {
 };
 
 export const loadCars = (state) => {
-  // loads cars only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.cars || Object.keys(state.cars).length === 0) {
     return fetchCars().then((res) => {
       state.commit('LOAD_CARS', res);

@@ -16,7 +16,7 @@ export const saveCar = (car) => {
   ).then((value) => {
     return value;
   }).catch((err) => {
-    console.log('oops! the car was too far gone, there was nothing we could do to save him ', err);
+    console.log('Error with saving car ', err);
   });
 };
 

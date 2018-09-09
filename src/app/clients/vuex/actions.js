@@ -26,9 +26,7 @@ export const createClient = ({ commit, state }, data) => {
   let id = guid();
   let client = Object.assign({ id: id }, data);
   commit('CREATE_CLIENT', {client: client});
-  saveClient(client).then((value) => {
-    // we've saved the client, what now
-  });
+  saveClient(client);
 };
 
 export const updateClient = ({ commit, state }, data) => {
@@ -48,8 +46,6 @@ export const deleteClient = ({ commit }, data) => {
 };
 
 export const loadClients = (state) => {
-  // loads clients only if they are not already loaded
-  // later we might want to be able to force reload them
   if (!state.clients || Object.keys(state.clients).length === 0) {
     return fetchClients().then((res) => {
       state.commit('LOAD_CLIENTS', res);
