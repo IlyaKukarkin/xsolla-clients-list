@@ -23,7 +23,7 @@
             <th>End date</th>
             <th>Client</th>
             <th>Object Type</th>
-            <th> <router-link class="button is-link" :to="{ name: 'createContract' }">Add contract</router-link> </th>
+            <th> <button class="button is-link" @click="checkContracts">Add contract</button> </th>
           </tr>
           </thead>
           <tbody>
@@ -53,6 +53,7 @@
           </tr>
           </tbody>
         </table>
+        <create-contract-window v-bind:class="{ 'is-active': showContractWindow }" v-on:ok="showContractWindow = false"></create-contract-window>
         <DeleteWindow v-bind:class="{ 'is-active': showDeleteWindow }" v-bind:entity-name="contractSummDelete" v-bind:entity-type='entityType' v-on:cancel="showDeleteWindow = false" v-on:yes="deleteContractFunc"></DeleteWindow>
       </div>
   </div>
@@ -62,15 +63,17 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import DeleteWindow from '../../components/deleteWindow';
+import CreateContractWindow from '../../components/createContractWindow';
 
 export default {
   name: 'contracts-list-view',
 
-  components: { DeleteWindow },
+  components: { DeleteWindow, CreateContractWindow },
 
   data: () => {
     return {
       showDeleteWindow: false,
+      showContractWindow: false,
       entityType: 'contract',
       contractSummDelete: '',
       contractToDelete: {}
@@ -92,6 +95,48 @@ export default {
       'loadFlats',
       'loadCars'
     ]),
+
+    availableClients () {
+      let availableClients = Object.keys(this.clients).filter(client => {
+        return this.clients[client].contractId === undefined;
+      });
+
+      return availableClients.map((key) => {
+        return this.clients[key];
+      });
+    },
+
+    availableCars () {
+      let availableCars = Object.keys(this.cars).filter(car => {
+        return this.cars[car].contractId === undefined;
+      });
+
+      return availableCars.map((key) => {
+        return this.cars[key];
+      });
+    },
+
+    availableFlats () {
+      let availableFlats = Object.keys(this.flats).filter(flat => {
+        return this.flats[flat].contractId === undefined;
+      });
+
+      return availableFlats.map((key) => {
+        return this.flats[key];
+      });
+    },
+
+    checkContracts () {
+      if (this.availableClients().length === 0) {
+        this.showContractWindow = true;
+      } else {
+        if (this.availableFlats().length === 0 && this.availableCars().length === 0) {
+          this.showContractWindow = true;
+        } else {
+          this.$router.push({ name: 'createContract' });
+        }
+      }
+    },
 
     askDeleteContract (contract) {
       this.contractSummDelete = contract.summ;

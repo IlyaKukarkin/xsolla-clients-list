@@ -99,12 +99,12 @@
             <div class="field">
               <div class="control">
                 <select v-if="chosenObject === 'Flat'" class="select input" v-bind:class="{ 'is-danger': objectIdDanger }" v-model="selectedContract.objectId">
-                  <option v-for="flat in flats" v-bind:value="flat.id" v-bind:key="flat.id">
+                  <option v-for="flat in availableFlats" v-bind:value="flat.id" v-bind:key="flat.id">
                     {{ flat.address }}
                   </option>
                 </select>
                 <select v-if="chosenObject === 'Car'" class="select input" v-bind:class="{ 'is-danger': objectIdDanger }" v-model="selectedContract.objectId">
-                  <option v-for="car in cars" v-bind:value="car.id" v-bind:key="car.id">
+                  <option v-for="car in availableCars" v-bind:value="car.id" v-bind:key="car.id">
                     {{ car.mark }} {{ car.model }}
                   </option>
                 </select>
@@ -301,6 +301,18 @@ export default {
       return !hasErrors;
     },
 
+    getObjectType () {
+      let objectId = Object.keys(this.contracts).filter(contract => {
+        return this.contracts[contract].id === this.selectedContract.id;
+      });
+      let selectedObject = this.getFlatFromId(this.contracts[objectId].objectId);
+      if (typeof selectedObject === 'object') {
+        return 'Flat';
+      } else {
+        return 'Car';
+      }
+    },
+
     processSave () {
       if (this.checkForm()) {
         this.editing ? this.saveContract() : this.saveNewContract();
@@ -317,17 +329,73 @@ export default {
 
     ...mapState({
       'clients': state => state.clients.clients,
+      'contracts': state => state.contracts.contracts,
       'cars': state => state.cars.cars,
       'flats': state => state.flats.flats
     }),
 
+    availableClients () {
+      let availableClients = {};
+      if (this.editing) {
+        availableClients = Object.keys(this.clients).filter(client => {
+          return (this.clients[client].contractId === undefined || this.clients[client].contractId === this.selectedContract.id);
+        });
+      } else {
+        availableClients = Object.keys(this.clients).filter(client => {
+          return this.clients[client].contractId === undefined;
+        });
+      }
+
+      return availableClients.map((key) => {
+        return this.clients[key];
+      });
+    },
+
+    availableCars () {
+      let availableCars = {};
+
+      if (this.editing && this.getObjectType() === 'Car') {
+        availableCars = Object.keys(this.cars).filter(car => {
+          return (this.cars[car].contractId === undefined || this.cars[car].contractId === this.selectedContract.id);
+        });
+      } else {
+        availableCars = Object.keys(this.cars).filter(car => {
+          return this.cars[car].contractId === undefined;
+        });
+      }
+
+      return availableCars.map((key) => {
+        return this.cars[key];
+      });
+    },
+
+    availableFlats () {
+      let availableFlats = {};
+
+      if (this.editing && this.getObjectType() === 'Flat') {
+        availableFlats = Object.keys(this.flats).filter(flat => {
+          return (this.flats[flat].contractId === undefined || this.flats[flat].contractId === this.selectedContract.id);
+        });
+      } else {
+        availableFlats = Object.keys(this.flats).filter(flat => {
+          return this.flats[flat].contractId === undefined;
+        });
+      }
+
+      return availableFlats.map((key) => {
+        return this.flats[key];
+      });
+    },
+
     sortedClients () {
-      let sortedKeys = Object.keys(this.clients).sort((a, b) => {
-        return this.clients[a].surname.localeCompare(this.clients[b].surname);
+      let avlbClients = this.availableClients;
+
+      let sortedKeys = Object.keys(avlbClients).sort((a, b) => {
+        return avlbClients[a].surname.localeCompare(avlbClients[b].surname);
       });
 
       return sortedKeys.map((key) => {
-        return this.clients[key];
+        return avlbClients[key];
       });
     }
   }
