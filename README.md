@@ -76,8 +76,6 @@ You can choose in dropdown list client for contract and select on of object for 
 
 INSERT SCREENSHOT HERE!!
 
-!Может сделать скрин из 4-ёх скринов, многовато скринов получается здесь!
-
 ### Edit and delete each entity
 ### View all entities in table
 ### Switch between tables with tabs
@@ -133,7 +131,7 @@ test('add client into store', () => {
   expect(store.state.clients).toEqual({});               // Check if store empty
   let client = {surname: 'Ivanov', name: 'Ivan', patronymic: 'Ivanovich', email: 'ivan777@gmail.com', phone: '89194651456', address: 'Lenina 50', series: 1638, number: 164162, birthDate: '18-11-1970'};
   store.commit('CREATE_CLIENT', {client: client});       // Add to the store client
-  
+
   // Check if created client in the store
   expect(store.state.clients).toEqual({'undefined': {'address': 'Lenina 50', 'birthDate': '18-11-1970', 'email': 'ivan777@gmail.com', 'name': 'Ivan', 'number': 164162, 'patronymic': 'Ivanovich', 'phone': '89194651456', 'series': 1638, 'surname': 'Ivanov'}});
 });
