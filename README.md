@@ -2,8 +2,6 @@
 
 > Xsolla summer school 2018 graduation work
 
-[![INSERT YOUR GRAPHIC HERE](https://i.gyazo.com/f003bfeaefb8c58e8f8af86ba6ebe527.png)]()
-
 ## Table of Content
 
 - [Demo](#demo)
@@ -48,7 +46,6 @@ $ npm run dev
 
 - Create clients, cars, flats and add them to contract
 - Edit and delete each entity
-- View all entities in table
 - Switch between tables with tabs
 - Input data validation
 - On screen errors and messages
@@ -62,26 +59,47 @@ $ npm run dev
 
 To create entity click button "Add" on the page of needed entity. "Create client page" looks like this.
 
-INSERT SCREENSHOT HERE!!
+![add client](https://i.gyazo.com/f2eddd375ea7f1f1022a23ee8849f5ab.png)
 
 If all your insert data passed throught, created client will appear in the clients table.
 
-INSERT SCREENSHOT HERE!!
+![clients list](https://i.gyazo.com/638fac94a207094c30ff2a1f96ff8a3e.png)
 
 After you created at least one client and one flat or car, you can create a contract. "Create contract page" looks like this.
 
-INSERT SCREENSHOT HERE!!
-
 You can choose in dropdown list client for contract and select on of object for evaluation (flat or car). Depending on selected object in dropdown will appear enteties of this object category.
 
-INSERT SCREENSHOT HERE!!
+![add contract](https://i.gyazo.com/fa1c4ef4e241fc06c98ea57b234b3e1c.png)
 
 ### Edit and delete each entity
-### View all entities in table
+
+You can edit and delete each entity. For example "Edit client page" looks like this.
+
+![edit client](https://i.gyazo.com/0b66b15853fc6497315f44756bf5407d.png)
+
 ### Switch between tables with tabs
+
+On the top of a page there are tabs for navigation beetween entities
+
+![tabs](https://i.gyazo.com/473af8f861d459e69331a31a6dc3bbfb.png)
+
 ### Input data validation
+
+Each "Add" or "Edit" pages provided with data validation to prevent wrong data input
+
+![validation](https://i.gyazo.com/39d8aaede5be8ee0274b28ca20755183.png)
+
 ### On screen errors and messages
+
+There are always some things that user might do, which are not possible. On screenshots below examples of on screen errors and messages
+
+![Errors](https://i.gyazo.com/e1736ec20e678c27084efe876b198fe0.png)
+
 ### Mobile version.
+
+Many people nowadays using their cell phones for almoust everything. Thats why mobile version is always appreciated
+
+![Mobile](https://i.gyazo.com/2d2e74426d8669f6b09cc7ffa91838e5.png)
 
 ---
 
@@ -103,15 +121,21 @@ INSERT SCREENSHOT HERE!!
 
 ## Tests
 
+Lint tests:
+
 > run linting test
 
 ```shell
 $ npm run lint
 ```
 
-Result of testing:
+Result of lint testing:
 
-INSERT SCREENSHOT HERE!!
+![lint](https://i.gyazo.com/50b9917e15356d9a3d70e628b87e60fd.png)
+
+No lint errors in project!
+
+Unit tests:
 
 > run tests
 
@@ -139,9 +163,9 @@ test('add client into store', () => {
 
 Each entity have 3 mutations - create, update and delete. That means for our 4 entities (Clients, Flats, Cars, Contracts) there will be in total 12 tests
 
-Result of testing:
+Result of unit testing:
 
-INSERT SCREENSHOT HERE!!
+![lint](https://i.gyazo.com/cf860fcb534d35145889bf4d0aa6c714.png)
 
 ---
 
